@@ -1,6 +1,7 @@
 ﻿@inherits EditComponent<Project, ProjectFactory, ProjectView, MyContext>
 @page "/projects/{id:int}"
 @using ProjectManagement.Pages.Projects
+@using ProjectManagement.Pages.Tasks
 
 @inject NavigationManager NavigationManager
 
@@ -33,6 +34,11 @@ else
         </div>
 
     </EditForm>
+
+    @if (Entity.Id != 0)
+    {
+        <DataGridComponent View=@(new TasksByProjectView(Entity.Id)) CreateButtonVisible="false" />
+    }
 }
 
 @code {

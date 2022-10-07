@@ -1,0 +1,63 @@
+﻿@inherits EditComponent<Task, TaskFactory, TaskView, MyContext>
+@page "/tasks/{id:int}"
+@using Microsoft.EntityFrameworkCore
+@using ProjectManagement.Pages.Projects
+@using ProjectManagement.Pages.Tasks
+
+@inject NavigationManager NavigationManager
+
+<h3>@View.GetName(): @Entity</h3>
+
+<p>
+    <button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button>
+</p>
+
+@if (Loading)
+{
+    <div>Загрузка...</div>
+}
+else
+{
+    <EditForm Model="@Entity" OnValidSubmit="@HandleValidSubmit">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text">Наименование</span></div>
+            <InputText id="Name" @bind-Value="Entity.Name" class="form-control" />
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text">Проект</span></div>
+            <LookupComponent TEntity="Project" @bind-Entity="@(Entity.Project)" View="@(new ProjectAllView())" />
+        </div>
+
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend"><label class="input-group-text">Статус</label></div>
+                <EnumInputSelectComponent TEntity="TaskStatus" @bind-Value2="@Entity.Status" />
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text">Дата начала</span></div>
+            <InputDate Type="InputDateType.DateTimeLocal" id="StartDate" class="form-control" @bind-Value="@Entity.StartDate" />
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text">Дата конца</span></div>
+            <InputDate Type="InputDateType.DateTimeLocal" id="EndDate" class="form-control" @bind-Value="@Entity.EndDate" />
+        </div>
+
+    </EditForm>
+}
+
+@code {
+    public void HandleValidSubmit()
+    {
+
+    }
+
+    public override IQueryable<Task> Include(DbSet<Task> dbSet)
+    {
+        return dbSet.Include(x => x.Project);
+    }
+}

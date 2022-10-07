@@ -1,6 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.Projects;
 
 namespace ProjectManagement
@@ -28,5 +26,7 @@ namespace ProjectManagement
         }
 
         public DbSet<Project> Projects { get; set; }
+
+        public DbSet<ProjectManagement.Pages.Tasks.Task> Tasks { get; set; }
     }
 }
