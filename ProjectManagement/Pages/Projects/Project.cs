@@ -10,6 +10,9 @@ namespace ProjectManagement.Pages.Projects
         [Field(DisplayName = "Наименование")]
         public string? Name { get; set; }
 
+        [Field(DisplayName = "Ссылка")]
+        public string? Link { get; set; }
+
         public override string GetName() => "Проект";
 
         public override string GetNames() => "Проекты";
@@ -39,6 +42,8 @@ namespace ProjectManagement.Pages.Projects
         public int Id { get; set; }
 
         public string? Name { get; set; }
+
+        public string? Link { get; set; }
 
         public string Url => $"clients/{Id}";
 
