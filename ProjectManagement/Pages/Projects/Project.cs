@@ -18,6 +18,9 @@ namespace ProjectManagement.Pages.Projects
         [Field(DisplayName = "Статус"), Bind("Status.Name")]
         public string? StatusName { get; set; }
 
+        [Field(DisplayName = "Описание")]
+        public string? Description { get; set; }
+
         public override string GetName() => "Проект";
 
         public override string GetNames() => "Проекты";
@@ -53,6 +56,8 @@ namespace ProjectManagement.Pages.Projects
         public int? StatusId { get; set; }
 
         public ProjectStatus? Status { get; set; }
+
+        public string? Description { get; set; }
 
         //public string Url => $"clients/{Id}";
 

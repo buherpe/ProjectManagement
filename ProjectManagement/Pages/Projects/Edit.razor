@@ -40,6 +40,13 @@ else
             <LookupComponent TEntity="ProjectStatus" @bind-Entity="@(Entity.Status)" View="@(new ProjectStatusAllView())" />
         </div>
 
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Описание</span>
+            </div>
+            <InputTextArea id="Description" @bind-Value="Entity.Description" class="form-control" />
+        </div>
+
     </EditForm>
 
     @if (Entity.Id != 0)
