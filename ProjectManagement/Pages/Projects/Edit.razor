@@ -1,5 +1,7 @@
 ﻿@inherits EditComponent<Project, ProjectFactory, ProjectView, MyContext>
 @page "/projects/{id:int}"
+@using Microsoft.EntityFrameworkCore
+@using ProjectManagement.Pages.ProjectStatuses
 @using ProjectManagement.Pages.Projects
 @using ProjectManagement.Pages.Tasks
 
@@ -33,6 +35,11 @@ else
             <InputText id="Link" @bind-Value="Entity.Link" class="form-control" />
         </div>
 
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text">Статус</span></div>
+            <LookupComponent TEntity="ProjectStatus" @bind-Entity="@(Entity.Status)" View="@(new ProjectStatusAllView())" />
+        </div>
+
     </EditForm>
 
     @if (Entity.Id != 0)
@@ -45,5 +52,10 @@ else
     public void HandleValidSubmit()
     {
 
+    }
+
+    public override IQueryable<Project> Include(DbSet<Project> dbSet)
+    {
+        return dbSet.Include(x => x.Status);
     }
 }

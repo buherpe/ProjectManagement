@@ -1,0 +1,38 @@
+﻿@inherits EditComponent<ProjectStatus, ProjectStatusFactory, ProjectStatusView, MyContext>
+@page "/projectStatuses/{id:int}"
+@using ProjectManagement.Pages.Projects
+@using ProjectManagement.Pages.ProjectStatuses
+@using ProjectManagement.Pages.Tasks
+
+@inject NavigationManager NavigationManager
+
+<h3>@View.GetName(): @Entity</h3>
+
+<p>
+    <button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button>
+</p>
+
+@if (Loading)
+{
+    <div>Загрузка...</div>
+}
+else
+{
+    <EditForm Model="@Entity" OnValidSubmit="@HandleValidSubmit">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Наименование</span>
+            </div>
+            <InputText id="Name" @bind-Value="Entity.Name" class="form-control" />
+        </div>
+
+    </EditForm>
+}
+
+@code {
+    public void HandleValidSubmit()
+    {
+
+    }
+}

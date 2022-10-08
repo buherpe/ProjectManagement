@@ -1,4 +1,6 @@
-﻿using RazorClassLibrary;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectManagement.Pages.ProjectStatuses;
+using RazorClassLibrary;
 
 namespace ProjectManagement.Pages.Projects
 {
@@ -13,6 +15,9 @@ namespace ProjectManagement.Pages.Projects
         [Field(DisplayName = "Ссылка")]
         public string? Link { get; set; }
 
+        [Field(DisplayName = "Статус"), Bind("Status.Name")]
+        public string? StatusName { get; set; }
+
         public override string GetName() => "Проект";
 
         public override string GetNames() => "Проекты";
@@ -26,14 +31,14 @@ namespace ProjectManagement.Pages.Projects
     {
         public override IQueryable GetData(string? filter)
         {
-            var clients = new MyContext().Projects.AsQueryable();
+            var projects = new MyContext().Projects.Include(x => x.Status).AsQueryable();
 
             if (!string.IsNullOrEmpty(filter))
             {
-                clients = clients.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
+                projects = projects.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
             }
 
-            return clients.OrderByDescending(x => x.Id);
+            return projects.OrderByDescending(x => x.Id);
         }
     }
 
@@ -45,7 +50,11 @@ namespace ProjectManagement.Pages.Projects
 
         public string? Link { get; set; }
 
-        public string Url => $"clients/{Id}";
+        public int? StatusId { get; set; }
+
+        public ProjectStatus? Status { get; set; }
+
+        //public string Url => $"clients/{Id}";
 
         public override string ToString() => $"{Name}";
     }

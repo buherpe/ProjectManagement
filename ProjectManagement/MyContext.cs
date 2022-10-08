@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.Projects;
+using ProjectManagement.Pages.ProjectStatuses;
 
 namespace ProjectManagement
 {
@@ -28,5 +29,7 @@ namespace ProjectManagement
         public DbSet<Project> Projects { get; set; }
 
         public DbSet<ProjectManagement.Pages.Tasks.Task> Tasks { get; set; }
+
+        public DbSet<ProjectStatus> ProjectStatuses { get; set; }
     }
 }
