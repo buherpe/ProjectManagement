@@ -1,0 +1,61 @@
+﻿@inherits EditComponent<User, UserFactory, UserView, MyContext>
+@page "/users/{id:int}"
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using ProjectManagement.Pages.Projects
+@using ProjectManagement.Pages.ProjectStatuses
+@using ProjectManagement.Pages.Tasks
+@using ProjectManagement.Pages.Users
+
+@inject NavigationManager NavigationManager
+
+<h3>@View.GetName(): @Entity</h3>
+
+<p>
+    <button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button>
+</p>
+
+@if (Loading)
+{
+    <div>Загрузка...</div>
+}
+else
+{
+    <EditForm Model="@Entity" OnValidSubmit="@HandleValidSubmit">
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text">Логин</span></div>
+            <InputText id="Username" @bind-Value="Entity.Username" class="form-control" />
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text">ФИО</span></div>
+            <InputText id="Fullname" @bind-Value="Entity.Fullname" class="form-control" />
+        </div>
+
+    </EditForm>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text">Пароль</span></div>
+        <input type="password" class="form-control" @bind-value="@_password"/>
+        <button @onclick="async () => await SavePassword()" type="button" class="btn btn-primary">Сохранить пароль</button>
+    </div>
+    
+}
+
+@code {
+    private string _password;
+
+    public void HandleValidSubmit()
+    {
+
+    }
+
+    public async System.Threading.Tasks.Task SavePassword()
+    {
+        var context = new MyContext();
+        var user = await context.Users.FirstOrDefaultAsync(x => x.Id == Entity.Id);
+        user.Password = new PasswordHasher<object>().HashPassword(null, _password);
+        await context.SaveChangesAsync();
+    }
+}
