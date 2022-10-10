@@ -31,5 +31,7 @@ namespace ProjectManagement
         public DbSet<ProjectManagement.Pages.Tasks.Task> Tasks { get; set; }
 
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }

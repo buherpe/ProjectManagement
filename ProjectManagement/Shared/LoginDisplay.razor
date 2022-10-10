@@ -1,0 +1,24 @@
+﻿@inject WebsiteAuthenticator WebsiteAuthenticator
+
+<AuthorizeView>
+    <Authorized>
+        @*<a href="Identity/Account/Manage">Пользователь: @context.User.Identity?.Name</a>*@
+        <a href="Identity/Account/Manage">Пользователь: @context.User?.FindFirst("Fullname")?.Value</a>
+        <form method="post" action="Identity/Account/LogOut">
+            <button type="button" class="btn btn-link" @onclick="TryLogout">Выйти</button>
+        </form>
+    </Authorized>
+    <NotAuthorized>
+        <a href="login">Войти</a>
+    </NotAuthorized>
+    <Authorizing>
+        Авторизация...
+    </Authorizing>
+</AuthorizeView>
+
+@code {
+    private async Task TryLogout()
+    {
+        await WebsiteAuthenticator.LogoutAsync();
+    }
+}
