@@ -13,10 +13,10 @@ namespace ProjectManagement.Pages.Tasks
         public int Id { get; set; }
 
         [Field(DisplayName = "Наименование")]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         [Field(DisplayName = "Проект"), Bind("Project.Name")]
-        public string? ProjectFullName { get; set; }
+        public string ProjectFullName { get; set; }
 
         [Field(Serviced = true)]
         public int Status { get; set; }
@@ -41,7 +41,7 @@ namespace ProjectManagement.Pages.Tasks
 
     public class TaskAllView : TaskView
     {
-        public override IQueryable GetData(string? filter)
+        public override IQueryable GetData(string filter)
         {
             var clients = new MyContext().Tasks.Include(x => x.Project).AsQueryable();
 
@@ -57,7 +57,7 @@ namespace ProjectManagement.Pages.Tasks
     public class TasksByProjectView : TaskAllView
     {
         [Field(DisplayName = "Проект", Serviced = true)]
-        public new string? ProjectFullName { get; set; }
+        public new string ProjectFullName { get; set; }
 
         private int _projectId;
 
@@ -71,7 +71,7 @@ namespace ProjectManagement.Pages.Tasks
             _projectId = projectId;
         }
 
-        public override IQueryable GetData(string? filter)
+        public override IQueryable GetData(string filter)
         {
             return base.GetData(filter).Cast<Task>().Where(x => x.ProjectId == _projectId);
         }
@@ -81,13 +81,13 @@ namespace ProjectManagement.Pages.Tasks
     {
         public int Id { get; set; }
 
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         public int? ProjectId { get; set; }
 
-        public Project? Project { get; set; }
+        public Project Project { get; set; }
 
         public int Status { get; set; }
 

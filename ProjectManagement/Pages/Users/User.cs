@@ -24,7 +24,7 @@ namespace ProjectManagement.Pages.Users
 
     public class UserAllView : UserView
     {
-        public override IQueryable GetData(string? filter)
+        public override IQueryable GetData(string filter)
         {
             var users = new MyContext().Users.AsQueryable();
 
@@ -41,11 +41,11 @@ namespace ProjectManagement.Pages.Users
     {
         public int Id { get; set; }
 
-        public string? Username { get; set; }
+        public string Username { get; set; }
 
-        public string? Password { get; set; }
+        public string Password { get; set; }
 
-        public string? Fullname { get; set; }
+        public string Fullname { get; set; }
 
         public override string ToString() => $"{Fullname}";
     }

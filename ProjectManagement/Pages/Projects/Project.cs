@@ -10,16 +10,16 @@ namespace ProjectManagement.Pages.Projects
         public int Id { get; set; }
 
         [Field(DisplayName = "Наименование")]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         [Field(DisplayName = "Ссылка")]
-        public string? Link { get; set; }
+        public string Link { get; set; }
 
         [Field(DisplayName = "Статус"), Bind("Status.Name")]
-        public string? StatusName { get; set; }
+        public string StatusName { get; set; }
 
         [Field(DisplayName = "Описание")]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         public override string GetName() => "Проект";
 
@@ -32,7 +32,7 @@ namespace ProjectManagement.Pages.Projects
 
     public class ProjectAllView : ProjectView
     {
-        public override IQueryable GetData(string? filter)
+        public override IQueryable GetData(string filter)
         {
             var projects = new MyContext().Projects.Include(x => x.Status).AsQueryable();
 
@@ -49,15 +49,15 @@ namespace ProjectManagement.Pages.Projects
     {
         public int Id { get; set; }
 
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
-        public string? Link { get; set; }
+        public string Link { get; set; }
 
         public int? StatusId { get; set; }
 
-        public ProjectStatus? Status { get; set; }
+        public ProjectStatus Status { get; set; }
 
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         //public string Url => $"clients/{Id}";
 

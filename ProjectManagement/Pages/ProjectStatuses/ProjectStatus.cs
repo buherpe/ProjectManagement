@@ -8,7 +8,7 @@ namespace ProjectManagement.Pages.ProjectStatuses
         public int Id { get; set; }
 
         [Field(DisplayName = "Наименование")]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         public override string GetName() => "Статус проекта";
 
@@ -21,7 +21,7 @@ namespace ProjectManagement.Pages.ProjectStatuses
 
     public class ProjectStatusAllView : ProjectStatusView
     {
-        public override IQueryable GetData(string? filter)
+        public override IQueryable GetData(string filter)
         {
             var projectStatuses = new MyContext().ProjectStatuses.AsQueryable();
 
@@ -38,7 +38,7 @@ namespace ProjectManagement.Pages.ProjectStatuses
     {
         public int Id { get; set; }
 
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         //public string Url => $"clients/{Id}";
 
