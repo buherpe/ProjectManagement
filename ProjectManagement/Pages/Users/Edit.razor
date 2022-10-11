@@ -24,19 +24,19 @@ else
     <EditForm Model="@Entity" OnValidSubmit="@HandleValidSubmit">
         
         <div class="input-group mb-3">
-            <div class="input-group-prepend"><span class="input-group-text">Логин</span></div>
+            <span class="input-group-text">Логин</span>
             <InputText id="Username" @bind-Value="Entity.Username" class="form-control" />
         </div>
 
         <div class="input-group mb-3">
-            <div class="input-group-prepend"><span class="input-group-text">ФИО</span></div>
+            <span class="input-group-text">ФИО</span>
             <InputText id="Fullname" @bind-Value="Entity.Fullname" class="form-control" />
         </div>
 
     </EditForm>
 
     <div class="input-group mb-3">
-        <div class="input-group-prepend"><span class="input-group-text">Пароль</span></div>
+        <span class="input-group-text">Пароль</span>
         <input type="password" class="form-control" @bind-value="@_password"/>
         <button @onclick="async () => await SavePassword()" type="button" class="btn btn-primary">Сохранить пароль</button>
     </div>

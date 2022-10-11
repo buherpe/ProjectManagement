@@ -22,28 +22,22 @@ else
     <EditForm Model="@Entity" OnValidSubmit="@HandleValidSubmit">
 
         <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Наименование</span>
-            </div>
+            <span class="input-group-text">Наименование</span>
             <InputText id="Name" @bind-Value="Entity.Name" class="form-control" />
         </div>
 
         <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Ссылка</span>
-            </div>
+            <span class="input-group-text">Ссылка</span>
             <InputText id="Link" @bind-Value="Entity.Link" class="form-control" />
         </div>
 
         <div class="input-group mb-3">
-            <div class="input-group-prepend"><span class="input-group-text">Статус</span></div>
-            <LookupComponent TEntity="ProjectStatus" @bind-Entity="@(Entity.Status)" View="@(new ProjectStatusAllView())" />
+            <span class="input-group-text">Статус</span>
+            <LookupComponent2 TEntity="ProjectStatus" @bind-Entity="@(Entity.Status)" View="@(new ProjectStatusAllView())" />
         </div>
 
         <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Описание</span>
-            </div>
+            <span class="input-group-text">Описание</span>
             <InputTextArea id="Description" @bind-Value="Entity.Description" class="form-control" />
         </div>
 

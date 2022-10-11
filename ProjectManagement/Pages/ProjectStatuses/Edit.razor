@@ -21,9 +21,7 @@ else
     <EditForm Model="@Entity" OnValidSubmit="@HandleValidSubmit">
 
         <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Наименование</span>
-            </div>
+            <span class="input-group-text">Наименование</span>
             <InputText id="Name" @bind-Value="Entity.Name" class="form-control" />
         </div>
 
