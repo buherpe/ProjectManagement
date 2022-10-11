@@ -25,11 +25,6 @@ else
             <InputText id="Name" @bind-Value="Entity.Name" class="form-control" />
         </div>
 
-        @*<div class="input-group mb-3">
-            <span class="input-group-text">Проект</span>
-            <LookupComponent TEntity="Project" @bind-Entity="@(Entity.Project)" View="@(new ProjectAllView())" />
-        </div>*@
-
         <div class="input-group mb-3">
             <span class="input-group-text">Проект</span>
             <LookupComponent2 TEntity="Project" @bind-Entity="@(Entity.Project)" View="@(new ProjectAllView())" />
