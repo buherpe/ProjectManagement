@@ -19,8 +19,8 @@ namespace ProjectManagement.Pages.Projects
         [Field(DisplayName = "Статус"), Bind("Status.Name")]
         public string StatusName { get; set; }
 
-        [Field(DisplayName = "Описание")]
-        public string Description { get; set; }
+        //[Field(DisplayName = "Описание")]
+        //public string Description { get; set; }
 
         public override string GetName() => "Проект";
 

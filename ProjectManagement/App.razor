@@ -1,7 +1,7 @@
 ﻿@using Blazored.Modal
 
 <CascadingAuthenticationState>
-    <CascadingBlazoredModal>
+    <CascadingBlazoredModal AnimationType="@ModalAnimationType.None" Size="ModalSize.Large">
         <Router AppAssembly="@typeof(App).Assembly">
             <Found Context="routeData">
                 <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
