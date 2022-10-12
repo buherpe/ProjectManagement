@@ -11,18 +11,17 @@
 
 <h3>@View.GetName(): @Entity</h3>
 
-<p>
-    <button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button>
-</p>
-
 @if (Loading)
 {
     <div>Загрузка...</div>
 }
 else
 {
-    <EditForm Model="@Entity" OnValidSubmit="@HandleValidSubmit">
-        
+    <p><button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button></p>
+
+    <EditForm EditContext="@editContext">
+        <DataAnnotationsValidator />
+
         <div class="input-group mb-3">
             <span class="input-group-text">Логин</span>
             <InputText id="Username" @bind-Value="Entity.Username" class="form-control" />
@@ -45,11 +44,6 @@ else
 
 @code {
     private string _password;
-
-    public void HandleValidSubmit()
-    {
-
-    }
 
     public async System.Threading.Tasks.Task SavePassword()
     {

@@ -8,17 +8,16 @@
 
 <h3>@View.GetName(): @Entity</h3>
 
-<p>
-    <button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button>
-</p>
-
 @if (Loading)
 {
     <div>Загрузка...</div>
 }
 else
 {
-    <EditForm Model="@Entity" OnValidSubmit="@HandleValidSubmit">
+    <p><button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button></p>
+
+    <EditForm EditContext="@editContext">
+        <DataAnnotationsValidator />
 
         <div class="input-group mb-3">
             <span class="input-group-text">Наименование</span>
@@ -51,11 +50,6 @@ else
 }
 
 @code {
-    public void HandleValidSubmit()
-    {
-
-    }
-
     public override IQueryable<Task> Include(DbSet<Task> dbSet)
     {
         return dbSet.Include(x => x.Project);

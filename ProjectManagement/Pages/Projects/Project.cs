@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.ProjectStatuses;
 using RazorClassLibrary;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManagement.Pages.Projects
 {
