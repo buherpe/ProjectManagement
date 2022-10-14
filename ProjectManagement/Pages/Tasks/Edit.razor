@@ -21,7 +21,7 @@ else
 
         <div class="input-group mb-3">
             <span class="input-group-text">Наименование</span>
-            <InputText id="Name" @bind-Value="Entity.Name" class="form-control" />
+            <InputText @bind-Value="Entity.Name" class="form-control" />
         </div>
 
         <div class="input-group mb-3">
@@ -38,12 +38,12 @@ else
 
         <div class="input-group mb-3">
             <span class="input-group-text">Дата начала</span>
-            <InputDate Type="InputDateType.DateTimeLocal" id="StartDate" class="form-control" @bind-Value="@Entity.StartDate" />
+            <InputDate Type="InputDateType.DateTimeLocal" class="form-control" @bind-Value="@Entity.StartDate" />
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text">Дата конца</span>
-            <InputDate Type="InputDateType.DateTimeLocal" id="EndDate" class="form-control" @bind-Value="@Entity.EndDate" />
+            <InputDate Type="InputDateType.DateTimeLocal" class="form-control" @bind-Value="@Entity.EndDate" />
         </div>
 
     </EditForm>
