@@ -1,0 +1,23 @@
+﻿@page "/di/{page}"
+
+
+@if (_view != null)
+{
+    @*<DynamicComponent Type="typeof(DataGridComponent)"
+                  Parameters="@(new Dictionary<string, object>{["View"] = _view})" />*@
+
+    <DataGridComponent View="@_view" />
+}
+
+@code {
+    [Parameter]
+    public string Page { get; set; }
+
+    private IView _view;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _view = Views.FirstOrDefault(x => x.GetEntityNames() == Page);
+
+    }
+}

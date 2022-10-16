@@ -2,6 +2,7 @@
 using ProjectManagement.Pages.Projects;
 using ProjectManagement.Pages.ProjectStatuses;
 using ProjectManagement.Pages.Users;
+using ProjectManagement.Pages.Domains;
 
 namespace ProjectManagement
 {
@@ -34,5 +35,7 @@ namespace ProjectManagement
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Domain> Domains { get; set; }
     }
 }

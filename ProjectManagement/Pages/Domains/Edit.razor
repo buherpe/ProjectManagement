@@ -1,0 +1,44 @@
+﻿@inherits EditComponent<Domain, DomainFactory, DomainView, MyContext>
+@page "/domains/{id:int}"
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject NavigationManager NavigationManager
+
+<h3>@View.GetName(): @Entity</h3>
+
+@if (Loading)
+{
+    <div>Загрузка...</div>
+}
+else
+{
+    <p>
+        <button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button>
+        <a class="btn btn-secondary" href="@($"https://my.freenom.com/domains.php?a=renewdomain&domain={Entity.FreenomDomainId}")" role="button">Продлить</a>
+    </p>
+
+    <EditForm EditContext="@editContext">
+        <DataAnnotationsValidator />
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Наименование</span>
+            <InputText @bind-Value="Entity.Name" class="form-control" />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Истекает</span>
+            <InputDate Type="InputDateType.Date" class="form-control" @bind-Value="@Entity.ExpiryDate" />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">ИД домена во Freenom</span>
+            <InputNumber @bind-Value="Entity.FreenomDomainId" class="form-control" />
+        </div>
+
+    </EditForm>
+}
+
+@code {
+    
+}
