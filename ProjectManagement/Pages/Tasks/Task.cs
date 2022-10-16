@@ -27,7 +27,7 @@ namespace ProjectManagement.Pages.Tasks
         [Field(DisplayName = "Дата начала")]
         public DateTime? StartDate { get; set; }
 
-        [Field(DisplayName = "Дата конца")]
+        [Field(DisplayName = "Дата окончания")]
         public DateTime? EndDate { get; set; }
 
         public override string GetName() => "Задача";
