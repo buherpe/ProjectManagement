@@ -11,10 +11,10 @@ namespace ProjectManagement.Pages.Domains
         public string Name { get; set; }
 
         [Field(DisplayName = "Истекает", Format = "d")]
-        public DateTime ExpiryDate { get; set; }
+        public DateTime? ExpiryDate { get; set; }
 
         [Field(DisplayName = "Осталось дней")]
-        public double ExpiryDate2 => ExpiryDate.Subtract(DateTime.Today).TotalDays;
+        public double? ExpiryDate2 => ExpiryDate?.Subtract(DateTime.Today).TotalDays;
 
         public override string GetName() => "Домен";
 
@@ -46,7 +46,7 @@ namespace ProjectManagement.Pages.Domains
 
         public string Name { get; set; }
 
-        public DateTime ExpiryDate { get; set; }
+        public DateTime? ExpiryDate { get; set; }
 
         public long FreenomDomainId { get; set; }
 

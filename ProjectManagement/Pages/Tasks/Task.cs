@@ -24,10 +24,10 @@ namespace ProjectManagement.Pages.Tasks
         [Field(DisplayName = "Статус")]
         public string StatusName => $"{Status} - {((TaskStatus)Status).GetDisplayName()}";
 
-        [Field(DisplayName = "Дата начала")]
+        [Field(DisplayName = "Дата начала", Format = "g")]
         public DateTime? StartDate { get; set; }
 
-        [Field(DisplayName = "Дата окончания")]
+        [Field(DisplayName = "Дата окончания", Format = "g")]
         public DateTime? EndDate { get; set; }
 
         public override string GetName() => "Задача";
