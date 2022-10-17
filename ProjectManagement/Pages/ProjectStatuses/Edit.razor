@@ -4,7 +4,7 @@
 
 <EditComponent TEntity="ProjectStatus" TFactory="ProjectStatusFactory" TView="ProjectStatusView" TContext="MyContext"
                Id="Id" @ref="editComponent">
-    <Fragment1>
+    <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
             <DataAnnotationsValidator />
 
@@ -14,7 +14,7 @@
             </div>
 
         </EditForm>
-    </Fragment1>
+    </MainTemplate>
 </EditComponent>
 
 @code {

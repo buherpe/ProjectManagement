@@ -6,12 +6,12 @@
 
 <EditComponent TEntity="Domain" TFactory="DomainFactory" TView="DomainView" TContext="MyContext"
                Id="Id" @ref="editComponent">
-    <Buttons>
+    <AdditionalButtonsTemplate>
         <a class="btn btn-secondary"
            href="@($"https://my.freenom.com/domains.php?a=renewdomain&domain={editComponent.Entity.FreenomDomainId}")"
            role="button">Продлить</a>
-    </Buttons>
-    <Fragment1>
+    </AdditionalButtonsTemplate>
+    <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
             <DataAnnotationsValidator />
 
@@ -31,7 +31,7 @@
             </div>
 
         </EditForm>
-    </Fragment1>
+    </MainTemplate>
 </EditComponent>
 
 @code {

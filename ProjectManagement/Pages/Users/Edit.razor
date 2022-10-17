@@ -10,7 +10,7 @@
 
 <EditComponent TEntity="User" TFactory="UserFactory" TView="UserView" TContext="MyContext"
                Id="Id" @ref="editComponent">
-    <Fragment1>
+    <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
             <DataAnnotationsValidator />
 
@@ -31,7 +31,7 @@
             <input type="password" class="form-control" @bind-value="@_password" />
             <button @onclick="async () => await SavePassword()" type="button" class="btn btn-primary">Сохранить пароль</button>
         </div>
-    </Fragment1>
+    </MainTemplate>
 </EditComponent>
 
 @code {

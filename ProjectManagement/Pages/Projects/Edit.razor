@@ -7,7 +7,7 @@
 
 <EditComponent TEntity="Project" TFactory="ProjectFactory" TView="ProjectView" TContext="MyContext"
                Id="Id" @ref="editComponent">
-    <Fragment1>
+    <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
             <DataAnnotationsValidator />
 
@@ -37,7 +37,7 @@
         {
             <DataGridComponent View=@(new TasksByProjectView(editComponent.Entity.Id)) CreateButtonVisible="false" />
         }
-    </Fragment1>
+    </MainTemplate>
 </EditComponent>
 
 @code {
