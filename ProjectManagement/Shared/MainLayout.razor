@@ -8,18 +8,18 @@
         <EditForm Model="LoginFormModel" Context="Login">
             <div>
                 <label>
-                    Username:
-                    <InputText @bind-Value="LoginFormModel.Username"></InputText>
+                    Логин:
+                    <InputText @bind-Value="LoginFormModel.Username" class="form-control"></InputText>
                 </label>
             </div>
             <div>
                 <label>
-                    Password:
-                    <InputText type="password" @bind-Value="LoginFormModel.Password"></InputText>
+                    Пароль:
+                    <InputText type="password" @bind-Value="LoginFormModel.Password" class="form-control"></InputText>
                 </label>
             </div>
             <div>
-                <button @onclick="TryLogin">Submit</button>
+                <button @onclick="TryLogin" class="btn btn-primary">Войти</button>
             </div>
         </EditForm>
     </NotAuthorized>
