@@ -4,26 +4,30 @@
 
 @inject NavigationManager NavigationManager
 
-<EditComponent TEntity="Domain" TFactory="DomainFactory" TView="DomainView" TContext="MyContext" Id="Id">
-    <Fragment1 Context="context2">
-        <a class="btn btn-secondary" href="@($"https://my.freenom.com/domains.php?a=renewdomain&domain={context2.Entity.FreenomDomainId}")" role="button">Продлить</a>
-        
-        <EditForm EditContext="context2.EditContext">
+<EditComponent TEntity="Domain" TFactory="DomainFactory" TView="DomainView" TContext="MyContext"
+               Id="Id" @ref="editComponent">
+    <Buttons>
+        <a class="btn btn-secondary"
+           href="@($"https://my.freenom.com/domains.php?a=renewdomain&domain={editComponent.Entity.FreenomDomainId}")"
+           role="button">Продлить</a>
+    </Buttons>
+    <Fragment1>
+        <EditForm EditContext="editComponent.EditContext">
             <DataAnnotationsValidator />
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Наименование</span>
-                <InputText @bind-Value="context2.Entity.Name" class="form-control" />
+                <InputText @bind-Value="editComponent.Entity.Name" class="form-control" />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Истекает</span>
-                <InputDate Type="InputDateType.Date" class="form-control" @bind-Value="context2.Entity.ExpiryDate" />
+                <InputDate Type="InputDateType.Date" class="form-control" @bind-Value="editComponent.Entity.ExpiryDate" />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">ИД домена во Freenom</span>
-                <InputNumber @bind-Value="context2.Entity.FreenomDomainId" class="form-control" />
+                <InputNumber @bind-Value="editComponent.Entity.FreenomDomainId" class="form-control" />
             </div>
 
         </EditForm>
@@ -33,4 +37,6 @@
 @code {
     [Parameter]
     public int Id { get; set; }
+
+    public EditComponent<Domain, DomainFactory, DomainView, MyContext> editComponent { get; set; }
 }

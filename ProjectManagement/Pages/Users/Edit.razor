@@ -8,19 +8,20 @@
 
 @inject NavigationManager NavigationManager
 
-<EditComponent TEntity="User" TFactory="UserFactory" TView="UserView" TContext="MyContext" Id="Id">
-    <Fragment1 Context="context2">
-        <EditForm EditContext="context2.EditContext">
+<EditComponent TEntity="User" TFactory="UserFactory" TView="UserView" TContext="MyContext"
+               Id="Id" @ref="editComponent">
+    <Fragment1>
+        <EditForm EditContext="editComponent.EditContext">
             <DataAnnotationsValidator />
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Логин</span>
-                <InputText id="Username" @bind-Value="context2.Entity.Username" class="form-control" />
+                <InputText id="Username" @bind-Value="editComponent.Entity.Username" class="form-control" />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">ФИО</span>
-                <InputText id="Fullname" @bind-Value="context2.Entity.Fullname" class="form-control" />
+                <InputText id="Fullname" @bind-Value="editComponent.Entity.Fullname" class="form-control" />
             </div>
 
         </EditForm>
@@ -36,6 +37,8 @@
 @code {
     [Parameter]
     public int Id { get; set; }
+
+    public EditComponent<User, UserFactory, UserView, MyContext> editComponent { get; set; }
 
     private string _password;
 

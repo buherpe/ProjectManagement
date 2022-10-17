@@ -1,25 +1,25 @@
 ﻿@page "/projectStatuses/{id:int}"
-@using ProjectManagement.Pages.Projects
-@using ProjectManagement.Pages.ProjectStatuses
-@using ProjectManagement.Pages.Tasks
 
 @inject NavigationManager NavigationManager
 
-<EditComponent TEntity="ProjectStatus" TFactory="ProjectStatusFactory" TView="ProjectStatusView" TContext="MyContext" Id="Id">
-    <Fragment1 Context="context2">
-        <EditForm EditContext="context2.EditContext">
-        <DataAnnotationsValidator />
+<EditComponent TEntity="ProjectStatus" TFactory="ProjectStatusFactory" TView="ProjectStatusView" TContext="MyContext"
+               Id="Id" @ref="editComponent">
+    <Fragment1>
+        <EditForm EditContext="editComponent.EditContext">
+            <DataAnnotationsValidator />
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">Наименование</span>
-                <InputText id="Name" @bind-Value="context2.Entity.Name" class="form-control" />
-        </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Наименование</span>
+                <InputText id="Name" @bind-Value="editComponent.Entity.Name" class="form-control" />
+            </div>
 
-    </EditForm>
+        </EditForm>
     </Fragment1>
 </EditComponent>
 
 @code {
     [Parameter]
     public int Id { get; set; }
+
+    public EditComponent<ProjectStatus, ProjectStatusFactory, ProjectStatusView, MyContext> editComponent { get; set; }
 }

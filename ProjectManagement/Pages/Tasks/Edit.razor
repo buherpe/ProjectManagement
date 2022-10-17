@@ -5,36 +5,37 @@
 
 @inject NavigationManager NavigationManager
 
-<EditComponent TEntity="Task" TFactory="TaskFactory" TView="TaskView" TContext="MyContext" Id="Id">
-    <Fragment1 Context="context2">
-        <EditForm EditContext="@context2.EditContext">
+<EditComponent TEntity="Task" TFactory="TaskFactory" TView="TaskView" TContext="MyContext"
+               Id="Id" @ref="editComponent">
+    <Fragment1>
+        <EditForm EditContext="editComponent.EditContext">
             <DataAnnotationsValidator />
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Наименование</span>
-                <InputText @bind-Value="context2.Entity.Name" class="form-control" />
+                <InputText @bind-Value="editComponent.Entity.Name" class="form-control" />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Проект</span>
-                <LookupComponent2 TEntity="Project" @bind-Entity="context2.Entity.Project" View="@(new ProjectAllView())" />
+                <LookupComponent2 TEntity="Project" @bind-Entity="editComponent.Entity.Project" View="@(new ProjectAllView())" />
             </div>
 
             <div class="form-group">
                 <div class="input-group mb-3">
                     <label class="input-group-text">Статус</label>
-                    <EnumInputSelectComponent TEntity="TaskStatus" @bind-Value2="context2.Entity.Status" />
+                    <EnumInputSelectComponent TEntity="TaskStatus" @bind-Value2="editComponent.Entity.Status" />
                 </div>
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Дата начала</span>
-                <InputDate Type="InputDateType.DateTimeLocal" class="form-control" @bind-Value="context2.Entity.StartDate" />
+                <InputDate Type="InputDateType.DateTimeLocal" class="form-control" @bind-Value="editComponent.Entity.StartDate" />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Дата окончания</span>
-                <InputDate Type="InputDateType.DateTimeLocal" class="form-control" @bind-Value="context2.Entity.EndDate" />
+                <InputDate Type="InputDateType.DateTimeLocal" class="form-control" @bind-Value="editComponent.Entity.EndDate" />
             </div>
 
         </EditForm>
@@ -44,4 +45,6 @@
 @code {
     [Parameter]
     public int Id { get; set; }
+
+    public EditComponent<Task, TaskFactory, TaskView, MyContext> editComponent { get; set; }
 }
