@@ -37,7 +37,7 @@ namespace ProjectManagement.Pages.Users
         }
     }
 
-    public class User : IEntity
+    public class User : IEntity, ICreatedModified
     {
         public int Id { get; set; }
 
@@ -46,6 +46,14 @@ namespace ProjectManagement.Pages.Users
         public string Password { get; set; }
 
         public string Fullname { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+
+        public int? CreatedBy { get; set; }
+
+        public DateTime? ModifiedAt { get; set; }
+
+        public int? ModifiedBy { get; set; }
 
         public override string ToString() => $"{Fullname}";
     }

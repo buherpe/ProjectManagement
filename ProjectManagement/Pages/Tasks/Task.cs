@@ -77,7 +77,7 @@ namespace ProjectManagement.Pages.Tasks
         }
     }
 
-    public class Task : IEntity
+    public class Task : IEntity, ICreatedModified
     {
         public int Id { get; set; }
 
@@ -94,6 +94,14 @@ namespace ProjectManagement.Pages.Tasks
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+
+        public int? CreatedBy { get; set; }
+
+        public DateTime? ModifiedAt { get; set; }
+
+        public int? ModifiedBy { get; set; }
 
         //public string Url => $"clients/{Id}";
 

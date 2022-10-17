@@ -34,13 +34,19 @@ namespace ProjectManagement.Pages.ProjectStatuses
         }
     }
 
-    public class ProjectStatus : IEntity
+    public class ProjectStatus : IEntity, ICreatedModified
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        //public string Url => $"clients/{Id}";
+        public DateTime? CreatedAt { get; set; }
+
+        public int? CreatedBy { get; set; }
+
+        public DateTime? ModifiedAt { get; set; }
+
+        public int? ModifiedBy { get; set; }
 
         public override string ToString() => $"{Name}";
     }

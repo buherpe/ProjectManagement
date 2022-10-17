@@ -46,7 +46,7 @@ namespace ProjectManagement.Pages.Projects
         }
     }
 
-    public class Project : IEntity
+    public class Project : IEntity, ICreatedModified
     {
         public int Id { get; set; }
 
@@ -60,7 +60,13 @@ namespace ProjectManagement.Pages.Projects
 
         public string Description { get; set; }
 
-        //public string Url => $"clients/{Id}";
+        public DateTime? CreatedAt { get; set; }
+
+        public int? CreatedBy { get; set; }
+
+        public DateTime? ModifiedAt { get; set; }
+
+        public int? ModifiedBy { get; set; }
 
         public override string ToString() => $"{Name}";
     }

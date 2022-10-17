@@ -40,7 +40,7 @@ namespace ProjectManagement.Pages.Domains
         }
     }
 
-    public class Domain : IEntity
+    public class Domain : IEntity, ICreatedModified
     {
         public int Id { get; set; }
 
@@ -49,6 +49,14 @@ namespace ProjectManagement.Pages.Domains
         public DateTime? ExpiryDate { get; set; }
 
         public long FreenomDomainId { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+
+        public int? CreatedBy { get; set; }
+
+        public DateTime? ModifiedAt { get; set; }
+
+        public int? ModifiedBy { get; set; }
 
         public override string ToString() => $"{Name}";
     }
