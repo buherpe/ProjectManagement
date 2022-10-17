@@ -1,5 +1,4 @@
-﻿@inherits EditComponent<User, UserFactory, UserView, MyContext>
-@page "/users/{id:int}"
+﻿@page "/users/{id:int}"
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
 @using ProjectManagement.Pages.Projects
@@ -9,46 +8,41 @@
 
 @inject NavigationManager NavigationManager
 
-<h3>@View.GetName(): @Entity</h3>
+<EditComponent TEntity="User" TFactory="UserFactory" TView="UserView" TContext="MyContext" Id="Id">
+    <Fragment1 Context="context2">
+        <EditForm EditContext="context2.EditContext">
+            <DataAnnotationsValidator />
 
-@if (Loading)
-{
-    <div>Загрузка...</div>
-}
-else
-{
-    <p><button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button></p>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Логин</span>
+                <InputText id="Username" @bind-Value="context2.Entity.Username" class="form-control" />
+            </div>
 
-    <EditForm EditContext="@editContext">
-        <DataAnnotationsValidator />
+            <div class="input-group mb-3">
+                <span class="input-group-text">ФИО</span>
+                <InputText id="Fullname" @bind-Value="context2.Entity.Fullname" class="form-control" />
+            </div>
+
+        </EditForm>
 
         <div class="input-group mb-3">
-            <span class="input-group-text">Логин</span>
-            <InputText id="Username" @bind-Value="Entity.Username" class="form-control" />
+            <span class="input-group-text">Пароль</span>
+            <input type="password" class="form-control" @bind-value="@_password" />
+            <button @onclick="async () => await SavePassword()" type="button" class="btn btn-primary">Сохранить пароль</button>
         </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text">ФИО</span>
-            <InputText id="Fullname" @bind-Value="Entity.Fullname" class="form-control" />
-        </div>
-
-    </EditForm>
-
-    <div class="input-group mb-3">
-        <span class="input-group-text">Пароль</span>
-        <input type="password" class="form-control" @bind-value="@_password"/>
-        <button @onclick="async () => await SavePassword()" type="button" class="btn btn-primary">Сохранить пароль</button>
-    </div>
-    
-}
+    </Fragment1>
+</EditComponent>
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
+
     private string _password;
 
     public async System.Threading.Tasks.Task SavePassword()
     {
         var context = new MyContext();
-        var user = await context.Users.FirstOrDefaultAsync(x => x.Id == Entity.Id);
+        var user = await context.Users.FirstOrDefaultAsync(x => x.Id == Id);
         user.Password = new PasswordHasher<object>().HashPassword(null, _password);
         await context.SaveChangesAsync();
     }

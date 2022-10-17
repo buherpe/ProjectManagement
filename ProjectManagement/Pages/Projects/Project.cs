@@ -29,20 +29,25 @@ namespace ProjectManagement.Pages.Projects
         public override string GetEntityName() => "project";
 
         public override string GetEntityNames() => "projects";
+
+        public override IQueryable<Project> Include(IQueryable<Project> queryable)
+        {
+            return queryable.Include(x => x.Status);
+        }
     }
 
     public class ProjectAllView : ProjectView
     {
         public override IQueryable GetData(string filter)
         {
-            var projects = new MyContext().Projects.Include(x => x.Status).AsQueryable();
+            var queryable = Include(new MyContext().Projects);
 
             if (!string.IsNullOrEmpty(filter))
             {
-                projects = projects.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
             }
 
-            return projects.OrderByDescending(x => x.Id);
+            return queryable.OrderByDescending(x => x.Id);
         }
     }
 

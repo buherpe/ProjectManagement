@@ -1,5 +1,4 @@
-﻿@inherits EditComponent<Project, ProjectFactory, ProjectView, MyContext>
-@page "/projects/{id:int}"
+﻿@page "/projects/{id:int}"
 @using Microsoft.EntityFrameworkCore
 @using ProjectManagement.Pages.ProjectStatuses
 @using ProjectManagement.Pages.Projects
@@ -7,50 +6,41 @@
 
 @inject NavigationManager NavigationManager
 
-<h3>@View.GetName(): @Entity</h3>
+<EditComponent TEntity="Project" TFactory="ProjectFactory" TView="ProjectView" TContext="MyContext" Id="Id">
+    <Fragment1 Context="context2">
+        <EditForm EditContext="context2.EditContext">
+            <DataAnnotationsValidator />
 
-@if (Loading)
-{
-    <div>Загрузка...</div>
-}
-else
-{
-    <p><button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button></p>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Наименование</span>
+                <InputText @bind-Value="context2.Entity.Name" class="form-control" />
+            </div>
 
-    <EditForm EditContext="@editContext">
-        <DataAnnotationsValidator />
+            <div class="input-group mb-3">
+                <span class="input-group-text">Ссылка</span>
+                <InputText @bind-Value="context2.Entity.Link" class="form-control" />
+            </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">Наименование</span>
-            <InputText @bind-Value="Entity.Name" class="form-control" />
-        </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Статус</span>
+                <LookupComponent2 TEntity="ProjectStatus" @bind-Entity="context2.Entity.Status" View="@(new ProjectStatusAllView())" />
+            </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">Ссылка</span>
-            <InputText @bind-Value="Entity.Link" class="form-control" />
-        </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Описание</span>
+                <InputTextArea @bind-Value="context2.Entity.Description" class="form-control" rows="10" />
+            </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">Статус</span>
-            <LookupComponent2 TEntity="ProjectStatus" @bind-Entity="@(Entity.Status)" View="@(new ProjectStatusAllView())" />
-        </div>
+        </EditForm>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">Описание</span>
-            <InputTextArea @bind-Value="Entity.Description" class="form-control" rows="10"/>
-        </div>
-
-    </EditForm>
-
-    @if (Entity.Id != 0)
-    {
-        <DataGridComponent View=@(new TasksByProjectView(Entity.Id)) CreateButtonVisible="false" />
-    }
-}
+        @if (context2.Entity.Id != 0)
+        {
+            <DataGridComponent View=@(new TasksByProjectView(context2.Entity.Id)) CreateButtonVisible="false" />
+        }
+    </Fragment1>
+</EditComponent>
 
 @code {
-    public override IQueryable<Project> Include(DbSet<Project> dbSet)
-    {
-        return dbSet.Include(x => x.Status);
-    }
+    [Parameter]
+    public int Id { get; set; }
 }

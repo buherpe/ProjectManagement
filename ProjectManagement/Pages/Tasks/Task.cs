@@ -37,20 +37,25 @@ namespace ProjectManagement.Pages.Tasks
         public override string GetEntityName() => "task";
 
         public override string GetEntityNames() => "tasks";
+
+        public override IQueryable<Task> Include(IQueryable<Task> dbSet)
+        {
+            return dbSet.Include(x => x.Project);
+        }
     }
 
     public class TaskAllView : TaskView
     {
         public override IQueryable GetData(string filter)
         {
-            var clients = new MyContext().Tasks.Include(x => x.Project).AsQueryable();
+            var queryable = Include(new MyContext().Tasks);
 
             if (!string.IsNullOrEmpty(filter))
             {
-                clients = clients.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
             }
 
-            return clients.OrderByDescending(x => x.Id);
+            return queryable.OrderByDescending(x => x.Id);
         }
     }
 

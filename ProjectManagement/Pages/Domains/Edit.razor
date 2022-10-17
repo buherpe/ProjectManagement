@@ -1,44 +1,36 @@
-﻿@inherits EditComponent<Domain, DomainFactory, DomainView, MyContext>
-@page "/domains/{id:int}"
+﻿@page "/domains/{id:int}"
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
 
 @inject NavigationManager NavigationManager
 
-<h3>@View.GetName(): @Entity</h3>
+<EditComponent TEntity="Domain" TFactory="DomainFactory" TView="DomainView" TContext="MyContext" Id="Id">
+    <Fragment1 Context="context2">
+        <a class="btn btn-secondary" href="@($"https://my.freenom.com/domains.php?a=renewdomain&domain={context2.Entity.FreenomDomainId}")" role="button">Продлить</a>
+        
+        <EditForm EditContext="context2.EditContext">
+            <DataAnnotationsValidator />
 
-@if (Loading)
-{
-    <div>Загрузка...</div>
-}
-else
-{
-    <p>
-        <button @onclick="Save" type="button" class="btn btn-primary">Сохранить</button>
-        <a class="btn btn-secondary" href="@($"https://my.freenom.com/domains.php?a=renewdomain&domain={Entity.FreenomDomainId}")" role="button">Продлить</a>
-    </p>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Наименование</span>
+                <InputText @bind-Value="context2.Entity.Name" class="form-control" />
+            </div>
 
-    <EditForm EditContext="@editContext">
-        <DataAnnotationsValidator />
+            <div class="input-group mb-3">
+                <span class="input-group-text">Истекает</span>
+                <InputDate Type="InputDateType.Date" class="form-control" @bind-Value="context2.Entity.ExpiryDate" />
+            </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">Наименование</span>
-            <InputText @bind-Value="Entity.Name" class="form-control" />
-        </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">ИД домена во Freenom</span>
+                <InputNumber @bind-Value="context2.Entity.FreenomDomainId" class="form-control" />
+            </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">Истекает</span>
-            <InputDate Type="InputDateType.Date" class="form-control" @bind-Value="@Entity.ExpiryDate" />
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text">ИД домена во Freenom</span>
-            <InputNumber @bind-Value="Entity.FreenomDomainId" class="form-control" />
-        </div>
-
-    </EditForm>
-}
+        </EditForm>
+    </Fragment1>
+</EditComponent>
 
 @code {
-    
+    [Parameter]
+    public int Id { get; set; }
 }
