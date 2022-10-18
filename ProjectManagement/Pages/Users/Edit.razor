@@ -29,7 +29,7 @@
         <div class="input-group mb-3">
             <span class="input-group-text">Пароль</span>
             <input type="password" class="form-control" @bind-value="@_password" />
-            <button @onclick="async () => await SavePassword()" type="button" class="btn btn-primary">Сохранить пароль</button>
+            <button @onclick="SavePassword" type="button" class="btn btn-primary">Сохранить пароль</button>
         </div>
     </MainTemplate>
 </EditComponent>
@@ -47,6 +47,7 @@
         var context = new MyContext();
         var user = await context.Users.FirstOrDefaultAsync(x => x.Id == Id);
         user.Password = new PasswordHasher<object>().HashPassword(null, _password);
+        //await System.Threading.Tasks.Task.Delay(2000);
         await context.SaveChangesAsync();
     }
 }
