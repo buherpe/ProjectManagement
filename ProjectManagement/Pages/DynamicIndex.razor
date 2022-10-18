@@ -1,23 +1,51 @@
-﻿@page "/di/{page}"
+﻿@page "/{page}"
+@using ProjectManagement.Pages.Domains
+@using ProjectManagement.Pages.ProjectStatuses
+@using ProjectManagement.Pages.Projects
+@using ProjectManagement.Pages.Tasks
+@using ProjectManagement.Pages.Users
 
 
-@if (_view != null)
+@*@if (_view != null)
 {
-    @*<DynamicComponent Type="typeof(DataGridComponent)"
-                  Parameters="@(new Dictionary<string, object>{["View"] = _view})" />*@
-
     <DataGridComponent View="@_view" />
+}*@
+
+@switch (Page)
+{
+    case "projects":
+        <PageTitle>Проекты</PageTitle>
+        <DataGridComponent View="@(new ProjectAllView())" />
+        break;
+    case "tasks":
+        <PageTitle>Задачи</PageTitle>
+        <DataGridComponent View="@(new TaskAllView())" />
+        break;
+    case "projectStatuses":
+        <PageTitle>Статусы проекта</PageTitle>
+        <DataGridComponent View="@(new ProjectStatusAllView())" />
+        break;
+    case "users":
+        <PageTitle>Пользователи</PageTitle>
+        <DataGridComponent View="@(new UserAllView())" />
+        break;
+    case "domains":
+        <PageTitle>Домены</PageTitle>
+        <DataGridComponent View="@(new DomainAllView())" />
+        break;
+    default:
+        break;
 }
 
 @code {
     [Parameter]
     public string Page { get; set; }
 
-    private IView _view;
+    //private IView _view;
 
-    protected override async Task OnParametersSetAsync()
-    {
-        _view = Views.FirstOrDefault(x => x.GetEntityNames() == Page);
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    //_view = Views.FirstOrDefault(x => x.GetEntityNames() == Page);
 
-    }
+    //}
 }

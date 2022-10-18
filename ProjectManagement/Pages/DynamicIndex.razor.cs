@@ -8,14 +8,14 @@ namespace ProjectManagement.Pages
 {
     public partial class DynamicIndex
     {
-        public static List<IView> Views { get; set; } = new List<IView>();
+        //public static List<IView> Views { get; set; } = new List<IView>();
 
-        public DynamicIndex()
-        {
-            Views.Add(new ProjectAllView());
-            Views.Add(new ProjectStatusAllView());
-            Views.Add(new TaskAllView());
-            Views.Add(new UserAllView());
-        }
+        //public DynamicIndex()
+        //{
+        //    Views.Add(new ProjectAllView());
+        //    Views.Add(new ProjectStatusAllView());
+        //    Views.Add(new TaskAllView());
+        //    Views.Add(new UserAllView());
+        //}
     }
 }

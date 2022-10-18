@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Domains\Index.razor" />
+    <Content Remove="Pages\ProjectStatuses\Index.razor" />
+    <Content Remove="Pages\Projects\Index.razor" />
+    <Content Remove="Pages\Tasks\Index.razor" />
+    <Content Remove="Pages\Users\Index.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
 
