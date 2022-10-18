@@ -32,12 +32,14 @@
             </div>
 
         </EditForm>
-
+    </MainTemplate>
+    <FooterTemplate>
+        <hr />
         @if (editComponent.Entity.Id != 0)
         {
             <DataGridComponent View=@(new TasksByProjectView(editComponent.Entity.Id)) CreateButtonVisible="false" />
         }
-    </MainTemplate>
+    </FooterTemplate>
 </EditComponent>
 
 @code {

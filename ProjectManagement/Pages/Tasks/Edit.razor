@@ -15,7 +15,7 @@
                 <span class="input-group-text">Наименование</span>
                 <InputText @bind-Value="editComponent.Entity.Name" class="form-control" />
             </div>
-
+            
             <div class="input-group mb-3">
                 <span class="input-group-text">Проект</span>
                 <LookupComponent2 TEntity="Project" @bind-Entity="editComponent.Entity.Project" View="@(new ProjectAllView())" />
