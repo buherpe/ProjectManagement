@@ -40,7 +40,8 @@
         <hr />
         @if (editComponent.Entity.Id != 0)
         {
-            <DataGridComponent View=@(new TasksByProjectView(_context, editComponent.Entity.Id)) CreateButtonVisible="false" />
+            <DataGridComponent View=@(new TasksByProjectView(_context, editComponent.Entity.Id))
+                           CreateButtonVisible="false" TEntity="ProjectManagement.Pages.Tasks.Task" />
         }
     </FooterTemplate>
 </EditComponent>

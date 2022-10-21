@@ -16,23 +16,24 @@
 {
     case "projects":
         <PageTitle>Проекты</PageTitle>
-        <DataGridComponent View="@(new ProjectAllView(_context))" />
+        <DataGridComponent View="@(new ProjectAllView(_context))" TEntity="Project" />
         break;
     case "tasks":
         <PageTitle>Задачи</PageTitle>
-        <DataGridComponent View="@(new TaskAllView(_context))" />
+        <DataGridComponent View="@(new TaskAllView(_context))"
+                   TEntity="ProjectManagement.Pages.Tasks.Task" />
         break;
     case "projectStatuses":
         <PageTitle>Статусы проекта</PageTitle>
-        <DataGridComponent View="@(new ProjectStatusAllView(_context))" />
+        <DataGridComponent View="@(new ProjectStatusAllView(_context))" TEntity="ProjectStatus" />
         break;
     case "users":
         <PageTitle>Пользователи</PageTitle>
-        <DataGridComponent View="@(new UserAllView(_context))" />
+        <DataGridComponent View="@(new UserAllView(_context))" TEntity="User" />
         break;
     case "domains":
         <PageTitle>Домены</PageTitle>
-        <DataGridComponent View="@(new DomainAllView(_context))" />
+        <DataGridComponent View="@(new DomainAllView(_context))" TEntity="Domain" />
         break;
     default:
         break;
