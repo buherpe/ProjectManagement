@@ -7,7 +7,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ProjectManagement.Pages.Tasks
 {
-    public class TaskView : BaseView<Task, TaskFactory, MyContext>
+    public class TaskView : BaseView<Task>
     {
         [Field(DisplayName = "#")]
         public int Id { get; set; }
@@ -111,10 +111,6 @@ namespace ProjectManagement.Pages.Tasks
         //public string Url => $"clients/{Id}";
 
         public override string ToString() => $"{Name}";
-    }
-
-    public class TaskFactory : BaseFactory<Task, MyContext>
-    {
     }
 
     public enum TaskStatus

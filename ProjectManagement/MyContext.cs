@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.Projects;
 using ProjectManagement.Pages.ProjectStatuses;
-using ProjectManagement.Pages.Users;
 using ProjectManagement.Pages.Domains;
+using RazorClassLibrary;
 
 namespace ProjectManagement
 {
-    public class MyContext : DbContext
+    public class MyContext : DbContext, IUsers
     {
         public MyContext()
         {

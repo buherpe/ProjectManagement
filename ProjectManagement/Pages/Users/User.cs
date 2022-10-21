@@ -2,7 +2,7 @@
 
 namespace ProjectManagement.Pages.Users
 {
-    public class UserView : BaseView<User, UserFactory, MyContext>
+    public class UserView : BaseView<User>
     {
         [Field(DisplayName = "#")]
         public int Id { get; set; }
@@ -35,31 +35,5 @@ namespace ProjectManagement.Pages.Users
 
             return users.OrderByDescending(x => x.Id);
         }
-    }
-
-    public class User : IEntity, ICreatedModified
-    {
-        public int Id { get; set; }
-
-        public string Username { get; set; }
-
-        public string Password { get; set; }
-
-        public string Fullname { get; set; }
-
-        public DateTime? CreatedAt { get; set; }
-
-        public int? CreatedBy { get; set; }
-
-        public DateTime? ModifiedAt { get; set; }
-
-        public int? ModifiedBy { get; set; }
-
-        public override string ToString() => $"{Fullname}";
-    }
-
-    public class UserFactory : BaseFactory<User, MyContext>
-    {
-
     }
 }

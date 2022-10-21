@@ -1,9 +1,36 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.DataProtection
+@inject IDataProtectionProvider _provider
 
 <PageTitle>Главная</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+@code {
+    private string _rawText;
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    public string RawText
+    {
+        get
+        {
+            return _rawText;
+        }
+        set
+        {
+            _rawText = value;
+
+            var purpose = @"Lh9XTMkHZSLvuSJ4VPLjMifVsPhsCtVEHz7CZx3LLUPjQXQWEPhDyV2Jqn2Jktzz";
+
+            var protector = _provider.CreateProtector(purpose);
+            Encrypted = protector.Protect(value ?? "");
+
+            var protector2 = _provider.CreateProtector(purpose);
+            Decrypted = protector2.Unprotect(Encrypted);
+        }
+    }
+
+    public string Encrypted { get; set; }
+
+    public string Decrypted { get; set; }
+
+}

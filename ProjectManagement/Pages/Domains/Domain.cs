@@ -2,7 +2,7 @@
 
 namespace ProjectManagement.Pages.Domains
 {
-    public class DomainView : BaseView<Domain, DomainFactory, MyContext>
+    public class DomainView : BaseView<Domain>
     {
         [Field(DisplayName = "#")]
         public int Id { get; set; }
@@ -59,10 +59,5 @@ namespace ProjectManagement.Pages.Domains
         public int? ModifiedBy { get; set; }
 
         public override string ToString() => $"{Name}";
-    }
-
-    public class DomainFactory : BaseFactory<Domain, MyContext>
-    {
-
     }
 }

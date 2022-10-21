@@ -4,7 +4,7 @@
 
 @inject NavigationManager NavigationManager
 
-<EditComponent TEntity="Domain" TFactory="DomainFactory" TView="DomainView" TContext="MyContext"
+<EditComponent TEntity="Domain" TView="DomainView"
                Id="Id" @ref="editComponent">
     <AdditionalButtonsTemplate>
         <a class="btn btn-secondary"
@@ -38,5 +38,5 @@
     [Parameter]
     public int Id { get; set; }
 
-    public EditComponent<Domain, DomainFactory, DomainView, MyContext> editComponent { get; set; }
+    public EditComponent<Domain, DomainView> editComponent { get; set; }
 }

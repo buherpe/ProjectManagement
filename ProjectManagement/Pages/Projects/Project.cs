@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManagement.Pages.Projects
 {
-    public class ProjectView : BaseView<Project, ProjectFactory, MyContext>
+    public class ProjectView : BaseView<Project>
     {
         [Field(DisplayName = "#")]
         public int Id { get; set; }
@@ -74,10 +74,5 @@ namespace ProjectManagement.Pages.Projects
         public int? ModifiedBy { get; set; }
 
         public override string ToString() => $"{Name}";
-    }
-
-    public class ProjectFactory : BaseFactory<Project, MyContext>
-    {
-
     }
 }

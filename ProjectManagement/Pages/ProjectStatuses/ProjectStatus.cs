@@ -2,7 +2,7 @@
 
 namespace ProjectManagement.Pages.ProjectStatuses
 {
-    public class ProjectStatusView : BaseView<ProjectStatus, ProjectStatusFactory, MyContext>
+    public class ProjectStatusView : BaseView<ProjectStatus>
     {
         [Field(DisplayName = "#")]
         public int Id { get; set; }
@@ -49,10 +49,5 @@ namespace ProjectManagement.Pages.ProjectStatuses
         public int? ModifiedBy { get; set; }
 
         public override string ToString() => $"{Name}";
-    }
-
-    public class ProjectStatusFactory : BaseFactory<ProjectStatus, MyContext>
-    {
-
     }
 }
