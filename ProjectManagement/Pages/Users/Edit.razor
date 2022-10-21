@@ -7,6 +7,7 @@
 @using ProjectManagement.Pages.Users
 
 @inject NavigationManager NavigationManager
+@inject MyContext _context;
 
 <EditComponent TEntity="User" TView="UserView"
                Id="Id" @ref="editComponent">
@@ -16,12 +17,14 @@
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Логин</span>
-                <InputText id="Username" @bind-Value="editComponent.Entity.Username" class="form-control" />
+                <InputText id="Username" @bind-Value="editComponent.Entity.Username"
+                           class="form-control" />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">ФИО</span>
-                <InputText id="Fullname" @bind-Value="editComponent.Entity.Fullname" class="form-control" />
+                <InputText id="Fullname" @bind-Value="editComponent.Entity.Fullname"
+                           class="form-control" />
             </div>
 
         </EditForm>
@@ -44,10 +47,9 @@
 
     public async System.Threading.Tasks.Task SavePassword()
     {
-        //var context = new MyContext();
-        //var user = await context.Users.FirstOrDefaultAsync(x => x.Id == Id);
-        //user.Password = new PasswordHasher<object>().HashPassword(null, _password);
-        ////await System.Threading.Tasks.Task.Delay(2000);
-        //await context.SaveChangesAsync();
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == Id);
+        user.Password = new PasswordHasher<object>().HashPassword(null, _password);
+        //await System.Threading.Tasks.Task.Delay(2000);
+        await _context.SaveChangesAsync();
     }
 }
