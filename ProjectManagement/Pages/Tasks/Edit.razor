@@ -4,6 +4,7 @@
 @using ProjectManagement.Pages.Tasks
 
 @inject NavigationManager NavigationManager
+@inject MyContext _context;
 
 <EditComponent TEntity="Task" TView="TaskView"
                Id="Id" @ref="editComponent">
@@ -15,27 +16,31 @@
                 <span class="input-group-text">Наименование</span>
                 <InputText @bind-Value="editComponent.Entity.Name" class="form-control" />
             </div>
-            
+
             <div class="input-group mb-3">
                 <span class="input-group-text">Проект</span>
-                <LookupComponent2 TEntity="Project" @bind-Entity="editComponent.Entity.Project" View="@(new ProjectAllView())" />
+                <LookupComponent2 TEntity="Project" @bind-Entity="editComponent.Entity.Project"
+                                  View="@(new ProjectAllView(_context))" />
             </div>
 
             <div class="form-group">
                 <div class="input-group mb-3">
                     <label class="input-group-text">Статус</label>
-                    <EnumInputSelectComponent TEntity="TaskStatus" @bind-Value2="editComponent.Entity.Status" />
+                    <EnumInputSelectComponent TEntity="TaskStatus"
+                                              @bind-Value2="editComponent.Entity.Status" />
                 </div>
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Дата начала</span>
-                <InputDate Type="InputDateType.DateTimeLocal" class="form-control" @bind-Value="editComponent.Entity.StartDate" />
+                <InputDate Type="InputDateType.DateTimeLocal" class="form-control"
+                           @bind-Value="editComponent.Entity.StartDate" />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Дата окончания</span>
-                <InputDate Type="InputDateType.DateTimeLocal" class="form-control" @bind-Value="editComponent.Entity.EndDate" />
+                <InputDate Type="InputDateType.DateTimeLocal" class="form-control"
+                           @bind-Value="editComponent.Entity.EndDate" />
             </div>
 
         </EditForm>

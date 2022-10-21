@@ -24,9 +24,21 @@ namespace ProjectManagement.Pages.Users
 
     public class UserAllView : UserView
     {
+        private MyContext _context;
+
+        public UserAllView()
+        {
+
+        }
+
+        public UserAllView(MyContext context)
+        {
+            _context = context;
+        }
+
         public override IQueryable GetData(string filter)
         {
-            var users = new MyContext().Users.AsQueryable();
+            var users = _context.Users.AsQueryable();
 
             if (!string.IsNullOrEmpty(filter))
             {

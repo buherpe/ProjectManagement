@@ -21,9 +21,21 @@ namespace ProjectManagement.Pages.ProjectStatuses
 
     public class ProjectStatusAllView : ProjectStatusView
     {
+        private MyContext _context;
+
+        public ProjectStatusAllView()
+        {
+
+        }
+
+        public ProjectStatusAllView(MyContext context)
+        {
+            _context = context;
+        }
+
         public override IQueryable GetData(string filter)
         {
-            var projectStatuses = new MyContext().ProjectStatuses.AsQueryable();
+            var projectStatuses = _context.ProjectStatuses.AsQueryable();
 
             if (!string.IsNullOrEmpty(filter))
             {

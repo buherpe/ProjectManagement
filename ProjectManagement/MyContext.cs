@@ -8,11 +8,6 @@ namespace ProjectManagement
 {
     public class MyContext : DbContext, IUsers
     {
-        public MyContext()
-        {
-
-        }
-
         public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
 

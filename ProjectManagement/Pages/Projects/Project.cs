@@ -38,9 +38,21 @@ namespace ProjectManagement.Pages.Projects
 
     public class ProjectAllView : ProjectView
     {
+        private readonly MyContext _context;
+
+        public ProjectAllView()
+        {
+
+        }
+
+        public ProjectAllView(MyContext context)
+        {
+            _context = context;
+        }
+
         public override IQueryable GetData(string filter)
         {
-            var queryable = Include(new MyContext().Projects);
+            var queryable = Include(_context.Projects);
 
             if (!string.IsNullOrEmpty(filter))
             {

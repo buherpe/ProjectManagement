@@ -46,9 +46,21 @@ namespace ProjectManagement.Pages.Tasks
 
     public class TaskAllView : TaskView
     {
+        private MyContext _context;
+
+        public TaskAllView()
+        {
+
+        }
+
+        public TaskAllView(MyContext context)
+        {
+            _context = context;
+        }
+
         public override IQueryable GetData(string filter)
         {
-            var queryable = Include(new MyContext().Tasks);
+            var queryable = Include(_context.Tasks);
 
             if (!string.IsNullOrEmpty(filter))
             {
@@ -64,6 +76,8 @@ namespace ProjectManagement.Pages.Tasks
         [Field(DisplayName = "Проект", Serviced = true)]
         public new string ProjectFullName { get; set; }
 
+        private MyContext _context;
+
         private int _projectId;
 
         public TasksByProjectView()
@@ -71,8 +85,9 @@ namespace ProjectManagement.Pages.Tasks
 
         }
 
-        public TasksByProjectView(int projectId)
+        public TasksByProjectView(MyContext context, int projectId) : base(context)
         {
+            _context = context;
             _projectId = projectId;
         }
 

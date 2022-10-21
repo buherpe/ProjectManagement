@@ -4,6 +4,7 @@
 @using ProjectManagement.Pages.Tasks
 
 @inject NavigationManager NavigationManager
+@inject MyContext _context;
 
 <EditComponent TEntity="Project" TView="ProjectView"
                Id="Id" @ref="editComponent">
@@ -23,12 +24,14 @@
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Статус</span>
-                <LookupComponent2 TEntity="ProjectStatus" @bind-Entity="editComponent.Entity.Status" View="@(new ProjectStatusAllView())" />
+                <LookupComponent2 TEntity="ProjectStatus" @bind-Entity="editComponent.Entity.Status"
+                                  View="@(new ProjectStatusAllView(_context))" />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">Описание</span>
-                <InputTextArea @bind-Value="editComponent.Entity.Description" class="form-control" rows="10" />
+                <InputTextArea @bind-Value="editComponent.Entity.Description"
+                               class="form-control" rows="10" />
             </div>
 
         </EditForm>
@@ -37,7 +40,7 @@
         <hr />
         @if (editComponent.Entity.Id != 0)
         {
-            <DataGridComponent View=@(new TasksByProjectView(editComponent.Entity.Id)) CreateButtonVisible="false" />
+            <DataGridComponent View=@(new TasksByProjectView(_context, editComponent.Entity.Id)) CreateButtonVisible="false" />
         }
     </FooterTemplate>
 </EditComponent>

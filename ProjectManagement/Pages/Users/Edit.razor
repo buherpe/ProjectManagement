@@ -8,7 +8,7 @@
 
 @inject NavigationManager NavigationManager
 
-<EditComponent TEntity="User" TFactory="UserFactory" TView="UserView" TContext="MyContext"
+<EditComponent TEntity="User" TView="UserView"
                Id="Id" @ref="editComponent">
     <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
@@ -44,10 +44,10 @@
 
     public async System.Threading.Tasks.Task SavePassword()
     {
-        var context = new MyContext();
-        var user = await context.Users.FirstOrDefaultAsync(x => x.Id == Id);
-        user.Password = new PasswordHasher<object>().HashPassword(null, _password);
-        //await System.Threading.Tasks.Task.Delay(2000);
-        await context.SaveChangesAsync();
+        //var context = new MyContext();
+        //var user = await context.Users.FirstOrDefaultAsync(x => x.Id == Id);
+        //user.Password = new PasswordHasher<object>().HashPassword(null, _password);
+        ////await System.Threading.Tasks.Task.Delay(2000);
+        //await context.SaveChangesAsync();
     }
 }

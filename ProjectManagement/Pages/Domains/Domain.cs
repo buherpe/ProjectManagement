@@ -27,9 +27,21 @@ namespace ProjectManagement.Pages.Domains
 
     public class DomainAllView : DomainView
     {
+        private MyContext _context;
+
+        public DomainAllView()
+        {
+
+        }
+
+        public DomainAllView(MyContext context)
+        {
+            _context = context;
+        }
+
         public override IQueryable GetData(string filter)
         {
-            var domains = new MyContext().Domains.AsQueryable();
+            var domains = _context.Domains.AsQueryable();
 
             if (!string.IsNullOrEmpty(filter))
             {

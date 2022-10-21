@@ -5,6 +5,7 @@
 @using ProjectManagement.Pages.Tasks
 @using ProjectManagement.Pages.Users
 
+@inject MyContext _context;
 
 @*@if (_view != null)
 {
@@ -15,23 +16,23 @@
 {
     case "projects":
         <PageTitle>Проекты</PageTitle>
-        <DataGridComponent View="@(new ProjectAllView())" />
+        <DataGridComponent View="@(new ProjectAllView(_context))" />
         break;
     case "tasks":
         <PageTitle>Задачи</PageTitle>
-        <DataGridComponent View="@(new TaskAllView())" />
+        <DataGridComponent View="@(new TaskAllView(_context))" />
         break;
     case "projectStatuses":
         <PageTitle>Статусы проекта</PageTitle>
-        <DataGridComponent View="@(new ProjectStatusAllView())" />
+        <DataGridComponent View="@(new ProjectStatusAllView(_context))" />
         break;
     case "users":
         <PageTitle>Пользователи</PageTitle>
-        <DataGridComponent View="@(new UserAllView())" />
+        <DataGridComponent View="@(new UserAllView(_context))" />
         break;
     case "domains":
         <PageTitle>Домены</PageTitle>
-        <DataGridComponent View="@(new DomainAllView())" />
+        <DataGridComponent View="@(new DomainAllView(_context))" />
         break;
     default:
         break;
