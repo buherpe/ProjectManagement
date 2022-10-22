@@ -1,4 +1,6 @@
-﻿namespace ProjectManagement
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ProjectManagement
 {
     //public class Class : BackgroundService
     //{
