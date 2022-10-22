@@ -5,6 +5,7 @@
 
 @inject NavigationManager NavigationManager
 @inject MyContext _context;
+@inject MyContext _context2;
 
 <EditComponent TEntity="Project" TView="ProjectView"
                Id="Id" @ref="editComponent">
@@ -40,7 +41,7 @@
         <hr />
         @if (editComponent.Entity.Id != 0)
         {
-            <DataGridComponent View=@(new TasksByProjectView(_context, editComponent.Entity.Id))
+            <DataGridComponent View=@(new TasksByProjectView(_context2, editComponent.Entity.Id))
                            CreateButtonVisible="false" TEntity="ProjectManagement.Pages.Tasks.Task" />
         }
     </FooterTemplate>

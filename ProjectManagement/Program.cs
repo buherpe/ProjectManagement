@@ -12,7 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddDbContext<DbContext, MyContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DbContext, MyContext>(o =>
+    o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    , ServiceLifetime.Transient
+    );
 builder.Services.AddScoped<WebsiteAuthenticator>();
 builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<WebsiteAuthenticator>());
 builder.Services.AddBlazoredModal();
