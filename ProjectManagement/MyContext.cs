@@ -6,22 +6,22 @@ using RazorClassLibrary;
 
 namespace ProjectManagement
 {
-    public class MyContext : DbContext, IUsers
+    public class MyContext : DbContext2, IUsers
     {
         public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .Build();
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    var configuration = new ConfigurationBuilder()
+        //        .SetBasePath(Directory.GetCurrentDirectory())
+        //        .AddJsonFile("appsettings.json", false, true)
+        //        .Build();
 
-            optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-        }
+        //    optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+        //}
 
         public DbSet<Project> Projects { get; set; }
 
