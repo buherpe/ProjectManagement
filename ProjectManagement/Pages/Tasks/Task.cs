@@ -139,4 +139,11 @@ namespace ProjectManagement.Pages.Tasks
         [Display(Name = "Готово")]
         Done = 2,
     }
+
+    public class TaskFactory : BaseFactory<Task>
+    {
+        public TaskFactory(DbContext context) : base(context)
+        {
+        }
+    }
 }

@@ -2,7 +2,7 @@
 
 @inject NavigationManager NavigationManager
 
-<EditComponent TEntity="ProjectStatus" TView="ProjectStatusView"
+<EditComponent TEntity="ProjectStatus" TView="ProjectStatusView" TContext="MyContext"
                Id="Id" @ref="editComponent">
     <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
@@ -21,5 +21,5 @@
     [Parameter]
     public int Id { get; set; }
 
-    public EditComponent<ProjectStatus, ProjectStatusView> editComponent { get; set; }
+    public EditComponent<ProjectStatus, ProjectStatusView, MyContext> editComponent { get; set; }
 }

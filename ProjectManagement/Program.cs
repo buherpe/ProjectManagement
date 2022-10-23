@@ -16,9 +16,11 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddDbContext<DbContext, MyContext>(o =>
     o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
     ServiceLifetime.Transient);
-//builder.Services.AddDbContextFactory<MyContext>(x =>
-//    x.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
-//    ServiceLifetime.Transient);
+builder.Services.AddDbContextFactory<MyContext>(x =>
+    x.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
+    ServiceLifetime.Transient);
+//builder.Services.AddTransient<BaseFactory<ProjectManagement.Pages.Tasks.Task>,
+//    ProjectManagement.Pages.Tasks.TaskFactory>();
 
 builder.Services.AddScoped<WebsiteAuthenticator>();
 builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<WebsiteAuthenticator>());

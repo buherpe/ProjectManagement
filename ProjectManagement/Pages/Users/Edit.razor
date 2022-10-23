@@ -9,7 +9,7 @@
 @inject NavigationManager NavigationManager
 @inject MyContext _context;
 
-<EditComponent TEntity="User" TView="UserView"
+<EditComponent TEntity="User" TView="UserView" TContext="MyContext"
                Id="Id" @ref="editComponent">
     <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
@@ -41,7 +41,7 @@
     [Parameter]
     public int Id { get; set; }
 
-    public EditComponent<User, UserView> editComponent { get; set; }
+    public EditComponent<User, UserView, MyContext> editComponent { get; set; }
 
     private string _password;
 

@@ -6,7 +6,7 @@
 @inject NavigationManager NavigationManager
 @inject MyContext _context;
 
-<EditComponent TEntity="Task" TView="TaskView"
+<EditComponent TEntity="Task" TView="TaskView" TContext="MyContext"
                Id="Id" @ref="editComponent">
     <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
@@ -53,5 +53,5 @@
     [Parameter]
     public int Id { get; set; }
 
-    public EditComponent<Task, TaskView> editComponent { get; set; }
+    public EditComponent<Task, TaskView, MyContext> editComponent { get; set; }
 }
