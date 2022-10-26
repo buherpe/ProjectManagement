@@ -56,7 +56,9 @@ namespace ProjectManagement.Pages.Projects
 
             if (!string.IsNullOrEmpty(filter))
             {
-                queryable = queryable.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(filter.ToLower()) ||
+                                                 x.Link.ToLower().Contains(filter.ToLower()) ||
+                                                 x.Description.ToLower().Contains(filter.ToLower()));
             }
 
             return queryable.OrderByDescending(x => x.Id);
