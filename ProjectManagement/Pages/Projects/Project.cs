@@ -61,7 +61,7 @@ namespace ProjectManagement.Pages.Projects
                                                  x.Description.ToLower().Contains(filter.ToLower()));
             }
 
-            return queryable.OrderByDescending(x => x.Id);
+            return queryable;
         }
     }
 

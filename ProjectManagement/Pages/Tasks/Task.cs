@@ -21,7 +21,7 @@ namespace ProjectManagement.Pages.Tasks
         [Field(Serviced = true)]
         public int Status { get; set; }
 
-        [Field(DisplayName = "Статус")]
+        [Field(DisplayName = "Статус"), Sort("Status")]
         public string StatusName => $"{Status} - {((TaskStatus)Status).GetDisplayName()}";
 
         [Field(DisplayName = "Дата начала", Format = "g")]
@@ -67,7 +67,7 @@ namespace ProjectManagement.Pages.Tasks
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
             }
 
-            return queryable.OrderByDescending(x => x.Id);
+            return queryable;
         }
     }
 

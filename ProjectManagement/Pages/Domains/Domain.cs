@@ -48,7 +48,7 @@ namespace ProjectManagement.Pages.Domains
                 domains = domains.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
             }
 
-            return domains.OrderByDescending(x => x.Id);
+            return domains;
         }
     }
 

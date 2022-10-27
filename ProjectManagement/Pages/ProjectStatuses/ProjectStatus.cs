@@ -42,7 +42,7 @@ namespace ProjectManagement.Pages.ProjectStatuses
                 projectStatuses = projectStatuses.Where(x => x.Name.ToLower().Contains(filter.ToLower()));
             }
 
-            return projectStatuses.OrderByDescending(x => x.Id);
+            return projectStatuses;
         }
     }
 
