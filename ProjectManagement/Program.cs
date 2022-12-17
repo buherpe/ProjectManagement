@@ -25,7 +25,7 @@ builder.Services.AddDbContextFactory<MyContext>(x =>
 builder.Services.AddScoped<WebsiteAuthenticator>();
 builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<WebsiteAuthenticator>());
 builder.Services.AddBlazoredModal();
-//builder.Services.AddHostedService<Class>();
+builder.Services.AddHostedService<ExchangeRateUpdater>();
 builder.Services.AddDataProtection();
 
 var app = builder.Build();

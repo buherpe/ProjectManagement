@@ -1,0 +1,31 @@
+﻿@page "/settings/{id:int}"
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject NavigationManager NavigationManager
+
+<EditComponent TEntity="Setting" TView="SettingView" TContext="MyContext" Id="Id" @ref="editComponent">
+    <MainTemplate>
+        <EditForm EditContext="editComponent.EditContext">
+            <DataAnnotationsValidator />
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Наименование</span>
+                <InputText @bind-Value="editComponent.Entity.Name" class="form-control" />
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Значение</span>
+                <InputText @bind-Value="editComponent.Entity.Value" class="form-control" />
+            </div>
+
+        </EditForm>
+    </MainTemplate>
+</EditComponent>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public EditComponent<Setting, SettingView, MyContext> editComponent { get; set; }
+}

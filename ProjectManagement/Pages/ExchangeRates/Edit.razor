@@ -1,0 +1,31 @@
+﻿@page "/exchangeRates/{id:int}"
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject NavigationManager NavigationManager
+
+<EditComponent TEntity="ExchangeRate" TView="ExchangeRateView" TContext="MyContext" Id="Id" @ref="editComponent">
+    <MainTemplate>
+        <EditForm EditContext="editComponent.EditContext">
+            <DataAnnotationsValidator />
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Код</span>
+                <InputText @bind-Value="editComponent.Entity.Code" class="form-control" />
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Курс</span>
+                <InputNumber @bind-Value="editComponent.Entity.Rate" class="form-control" />
+            </div>
+
+        </EditForm>
+    </MainTemplate>
+</EditComponent>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public EditComponent<ExchangeRate, ExchangeRateView, MyContext> editComponent { get; set; }
+}

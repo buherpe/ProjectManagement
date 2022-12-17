@@ -3,6 +3,8 @@ using ProjectManagement.Pages.Projects;
 using ProjectManagement.Pages.ProjectStatuses;
 using ProjectManagement.Pages.Domains;
 using RazorClassLibrary;
+using ProjectManagement.Pages.Settings;
+using ProjectManagement.Pages.ExchangeRates;
 
 namespace ProjectManagement
 {
@@ -10,7 +12,7 @@ namespace ProjectManagement
     {
         public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
-
+            
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -32,5 +34,9 @@ namespace ProjectManagement
         public DbSet<User> Users { get; set; }
 
         public DbSet<Domain> Domains { get; set; }
+
+        public DbSet<Setting> Settings { get; set; }
+
+        public DbSet<ExchangeRate> ExchangeRates { get; set; }
     }
 }

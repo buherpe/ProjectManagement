@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="RestSharp" Version="108.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\RazorClassLibrary\RazorClassLibrary.csproj" />
   </ItemGroup>
 

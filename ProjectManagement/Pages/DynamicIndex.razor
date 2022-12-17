@@ -1,7 +1,9 @@
 ﻿@page "/{page}"
 @using ProjectManagement.Pages.Domains
+@using ProjectManagement.Pages.ExchangeRates;
 @using ProjectManagement.Pages.ProjectStatuses
 @using ProjectManagement.Pages.Projects
+@using ProjectManagement.Pages.Settings;
 @using ProjectManagement.Pages.Tasks
 @using ProjectManagement.Pages.Users
 
@@ -34,6 +36,14 @@
     case "domains":
         <PageTitle>Домены</PageTitle>
         <DataGridComponent View="@(new DomainAllView(_context))" TEntity="Domain" />
+        break;
+    case "exchangeRates":
+        <PageTitle>Настройки</PageTitle>
+        <DataGridComponent View="@(new ExchangeRateAllView(_context))" TEntity="ExchangeRate" />
+        break;
+    case "settings":
+        <PageTitle>Настройки</PageTitle>
+        <DataGridComponent View="@(new SettingAllView(_context))" TEntity="Setting" />
         break;
     default:
         break;
