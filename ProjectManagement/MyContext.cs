@@ -4,7 +4,7 @@ using ProjectManagement.Pages.ProjectStatuses;
 using ProjectManagement.Pages.Domains;
 using RazorClassLibrary;
 using ProjectManagement.Pages.Settings;
-using ProjectManagement.Pages.ExchangeRates;
+using ProjectManagement.Pages.Currencies;
 
 namespace ProjectManagement
 {
@@ -37,6 +37,6 @@ namespace ProjectManagement
 
         public DbSet<Setting> Settings { get; set; }
 
-        public DbSet<ExchangeRate> ExchangeRates { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
     }
 }

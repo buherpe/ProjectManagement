@@ -1,6 +1,6 @@
 ﻿@page "/{page}"
 @using ProjectManagement.Pages.Domains
-@using ProjectManagement.Pages.ExchangeRates;
+@using ProjectManagement.Pages.Currencies;
 @using ProjectManagement.Pages.ProjectStatuses
 @using ProjectManagement.Pages.Projects
 @using ProjectManagement.Pages.Settings;
@@ -37,9 +37,9 @@
         <PageTitle>Домены</PageTitle>
         <DataGridComponent View="@(new DomainAllView(_context))" TEntity="Domain" />
         break;
-    case "exchangeRates":
+    case "currencies":
         <PageTitle>Настройки</PageTitle>
-        <DataGridComponent View="@(new ExchangeRateAllView(_context))" TEntity="ExchangeRate" />
+        <DataGridComponent View="@(new CurrencyAllView(_context))" TEntity="Currency" />
         break;
     case "settings":
         <PageTitle>Настройки</PageTitle>

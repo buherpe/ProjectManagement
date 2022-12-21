@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectManagement.Pages.ExchangeRates;
+using ProjectManagement.Pages.Currencies;
 using RestSharp;
 
 namespace ProjectManagement
@@ -56,8 +56,8 @@ namespace ProjectManagement
                         
                         foreach (var apiRate in exchangeRateApiResponse.Data.Rates)
                         {
-                            var dbRate = await context.ExchangeRates.FirstOrDefaultAsync(x => x.Code == apiRate.Key)
-                                ?? new ExchangeRate();
+                            var dbRate = await context.Currencies.FirstOrDefaultAsync(x => x.Code == apiRate.Key)
+                                ?? new Currency();
 
                             dbRate.Code = apiRate.Key;
                             dbRate.Rate = apiRate.Value;

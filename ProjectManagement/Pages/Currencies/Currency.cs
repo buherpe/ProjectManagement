@@ -1,9 +1,9 @@
 ﻿using ProjectManagement.Pages.Settings;
 using RazorClassLibrary;
 
-namespace ProjectManagement.Pages.ExchangeRates
+namespace ProjectManagement.Pages.Currencies
 {
-    public class ExchangeRateView : BaseView<ExchangeRate>
+    public class CurrencyView : BaseView<Currency>
     {
         [Field(DisplayName = "#")]
         public int Id { get; set; }
@@ -14,43 +14,43 @@ namespace ProjectManagement.Pages.ExchangeRates
         [Field(DisplayName = "Курс")]
         public decimal Rate { get; set; }
 
-        public override string GetName() => "Курс валюты";
+        public override string GetName() => "Валюта";
 
-        public override string GetNames() => "Курсы валют";
+        public override string GetNames() => "Валюты";
 
-        public override string GetEntityName() => "exchangeRate";
+        public override string GetEntityName() => "currency";
 
-        public override string GetEntityNames() => "exchangeRates";
+        public override string GetEntityNames() => "currencies";
     }
 
-    public class ExchangeRateAllView : ExchangeRateView
+    public class CurrencyAllView : CurrencyView
     {
         private MyContext _context;
 
-        public ExchangeRateAllView()
+        public CurrencyAllView()
         {
 
         }
 
-        public ExchangeRateAllView(MyContext context)
+        public CurrencyAllView(MyContext context)
         {
             _context = context;
         }
 
         public override IQueryable GetData(string filter)
         {
-            var exchangeRates = _context.ExchangeRates.AsQueryable();
+            var currency = _context.Currencies.AsQueryable();
 
             if (!string.IsNullOrEmpty(filter))
             {
-                exchangeRates = exchangeRates.Where(x => x.Code.ToLower().Contains(filter.ToLower()));
+                currency = currency.Where(x => x.Code.ToLower().Contains(filter.ToLower()));
             }
 
-            return exchangeRates;
+            return currency;
         }
     }
 
-    public class ExchangeRate : IEntity, ICreatedModified
+    public class Currency : IEntity, ICreatedModified
     {
         public int Id { get; set; }
 
