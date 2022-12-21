@@ -49,9 +49,12 @@ namespace ProjectManagement
                         var confHeader = _configuration.GetValue<string>("ExchangeRateApi:Header");
                         request.AddHeader(confHeader.Split(':')[0], confHeader.Split(':')[1]);
 
-                        var exchangeRateApiResponse = await client.GetAsync<ExchangeRateApiResponse>(request);
-
-                        foreach (var apiRate in exchangeRateApiResponse.Rates)
+                        _logger.LogInformation($"ExecuteAsync: Отправляем запрос к апи");
+                        var exchangeRateApiResponseResponse = await client.GetAsync(request);
+                        var exchangeRateApiResponse = client.Deserialize<ExchangeRateApiResponse>(exchangeRateApiResponseResponse);
+                        _logger.LogInformation($"ExecuteAsync: Ответ апи: {exchangeRateApiResponseResponse.Content}");
+                        
+                        foreach (var apiRate in exchangeRateApiResponse.Data.Rates)
                         {
                             var dbRate = await context.ExchangeRates.FirstOrDefaultAsync(x => x.Code == apiRate.Key)
                                 ?? new ExchangeRate();
@@ -64,9 +67,9 @@ namespace ProjectManagement
 
                         exchangeRateLastUpdateSetting.Value = $"{DateTime.Now:O}";
 
+                        _logger.LogInformation($"ExecuteAsync: Сохраняем");
                         await context.SaveChangesAsync(stoppingToken);
-
-                        _logger.LogInformation($"ExecuteAsync: Обновлено курсов: {exchangeRateApiResponse.Rates.Count}");
+                        _logger.LogInformation($"ExecuteAsync: Сохранено. Обновлено курсов: {exchangeRateApiResponse.Data.Rates.Count}");
                     }
 
                     await Task.Delay(60_000, stoppingToken);
