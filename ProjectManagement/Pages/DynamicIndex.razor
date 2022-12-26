@@ -1,4 +1,5 @@
 ﻿@page "/{page}"
+@using ProjectManagement.Pages.CurrencyConverterChatSettings;
 @using ProjectManagement.Pages.Domains
 @using ProjectManagement.Pages.Currencies;
 @using ProjectManagement.Pages.ProjectStatuses
@@ -44,6 +45,11 @@
     case "settings":
         <PageTitle>Настройки</PageTitle>
         <DataGridComponent View="@(new SettingAllView(_context))" TEntity="Setting" />
+        break;
+    case "currencyConverterChatSettings":
+        <PageTitle>Конвертер валют → Настройки чатов</PageTitle>
+        <DataGridComponent View="@(new CurrencyConverterChatSettingAllView(_context))" 
+            TEntity="CurrencyConverterChatSetting" />
         break;
     default:
         break;

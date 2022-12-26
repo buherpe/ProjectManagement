@@ -5,6 +5,7 @@ using ProjectManagement.Pages.Domains;
 using RazorClassLibrary;
 using ProjectManagement.Pages.Settings;
 using ProjectManagement.Pages.Currencies;
+using ProjectManagement.Pages.CurrencyConverterChatSettings;
 
 namespace ProjectManagement
 {
@@ -38,5 +39,7 @@ namespace ProjectManagement
         public DbSet<Setting> Settings { get; set; }
 
         public DbSet<Currency> Currencies { get; set; }
+
+        public DbSet<CurrencyConverterChatSetting> CurrencyConverterChatSettings { get; set; }
     }
 }

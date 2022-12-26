@@ -58,6 +58,8 @@ namespace ProjectManagement.Pages.Currencies
 
         public decimal Rate { get; set; }
 
+        public string Symbols { get; set; }
+
         public DateTime? CreatedAt { get; set; }
 
         public int? CreatedBy { get; set; }
