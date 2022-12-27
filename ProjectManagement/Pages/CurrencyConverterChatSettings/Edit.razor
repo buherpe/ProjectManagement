@@ -1,0 +1,32 @@
+﻿@page "/currencyConverterChatSettings/{id:int}"
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject NavigationManager NavigationManager
+
+<EditComponent TEntity="CurrencyConverterChatSetting" TView="CurrencyConverterChatSettingView" 
+    TContext="MyContext" Id="Id" @ref="editComponent">
+    <MainTemplate>
+        <EditForm EditContext="editComponent.EditContext">
+            <DataAnnotationsValidator />
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Чат</span>
+                <InputNumber @bind-Value="editComponent.Entity.ChatId" class="form-control" />
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Валюты</span>
+                <InputText @bind-Value="editComponent.Entity.Currencies" class="form-control" />
+            </div>
+
+        </EditForm>
+    </MainTemplate>
+</EditComponent>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public EditComponent<CurrencyConverterChatSetting, CurrencyConverterChatSettingView, MyContext> editComponent { get; set; }
+}
