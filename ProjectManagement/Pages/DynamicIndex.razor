@@ -18,38 +18,30 @@
 @switch (Page)
 {
     case "projects":
-        <PageTitle>Проекты</PageTitle>
-        <DataGridComponent View="@(new ProjectAllView(_context))" TEntity="Project" />
+        <DataGridComponent View="@(new ProjectAllView(_context))" TEntity="Project" SetPageTitle="true" />
         break;
     case "tasks":
-        <PageTitle>Задачи</PageTitle>
-        <DataGridComponent View="@(new TaskAllView(_context))"
+        <DataGridComponent View="@(new TaskAllView(_context))" SetPageTitle="true"
                    TEntity="ProjectManagement.Pages.Tasks.Task" />
         break;
     case "projectStatuses":
-        <PageTitle>Статусы проекта</PageTitle>
-        <DataGridComponent View="@(new ProjectStatusAllView(_context))" TEntity="ProjectStatus" />
+        <DataGridComponent View="@(new ProjectStatusAllView(_context))" TEntity="ProjectStatus" SetPageTitle="true" />
         break;
     case "users":
-        <PageTitle>Пользователи</PageTitle>
-        <DataGridComponent View="@(new UserAllView(_context))" TEntity="User" />
+        <DataGridComponent View="@(new UserAllView(_context))" TEntity="User" SetPageTitle="true" />
         break;
     case "domains":
-        <PageTitle>Домены</PageTitle>
-        <DataGridComponent View="@(new DomainAllView(_context))" TEntity="Domain" />
+        <DataGridComponent View="@(new DomainAllView(_context))" TEntity="Domain" SetPageTitle="true" />
         break;
     case "currencies":
-        <PageTitle>Настройки</PageTitle>
-        <DataGridComponent View="@(new CurrencyAllView(_context))" TEntity="Currency" />
+        <DataGridComponent View="@(new CurrencyAllView(_context))" TEntity="Currency" SetPageTitle="true" />
         break;
     case "settings":
-        <PageTitle>Настройки</PageTitle>
-        <DataGridComponent View="@(new SettingAllView(_context))" TEntity="Setting" />
+        <DataGridComponent View="@(new SettingAllView(_context))" TEntity="Setting" SetPageTitle="true" />
         break;
     case "currencyConverterChatSettings":
-        <PageTitle>Конвертер валют → Настройки чатов</PageTitle>
-        <DataGridComponent View="@(new CurrencyConverterChatSettingAllView(_context))" 
-            TEntity="CurrencyConverterChatSetting" />
+        <DataGridComponent View="@(new CurrencyConverterChatSettingAllView(_context))"
+                   TEntity="CurrencyConverterChatSetting" SetPageTitle="true" />
         break;
     default:
         break;
