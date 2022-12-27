@@ -35,18 +35,22 @@ namespace ProjectManagement
                     //_logger.LogInformation($"ExecuteAsync: Последнее обновление курса: " +
                     //    $"{exchangeRateLastUpdateSetting.Value}");
 
+                    var updateRateSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiUpdateRate");
+
                     if (exchangeRateLastUpdateSetting == null ||
                         string.IsNullOrEmpty(exchangeRateLastUpdateSetting.Value) ||
                         DateTime.Now - DateTime.Parse(exchangeRateLastUpdateSetting.Value)
-                            > TimeSpan.FromMinutes(_configuration.GetValue<int>("ExchangeRateApi:UpdateRate")))
+                            > TimeSpan.FromMinutes(int.Parse(updateRateSetting.Value)))
                     {
                         _logger.LogInformation($"ExecuteAsync: Курс протух, обновляем");
 
-                        var client = new RestClient(_configuration.GetSection("ExchangeRateApi:Url").Value);
+                        var urlSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiUrl");
+                        var client = new RestClient(urlSetting.Value);
 
                         var request = new RestRequest();
 
-                        var confHeader = _configuration.GetValue<string>("ExchangeRateApi:Header");
+                        var headerSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiHeader");
+                        var confHeader = headerSetting.Value;
                         request.AddHeader(confHeader.Split(':')[0], confHeader.Split(':')[1]);
 
                         _logger.LogInformation($"ExecuteAsync: Отправляем запрос к апи");
