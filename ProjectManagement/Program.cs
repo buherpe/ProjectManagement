@@ -27,6 +27,7 @@ builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredServ
 builder.Services.AddBlazoredModal();
 builder.Services.AddHostedService<ExchangeRateUpdater>();
 builder.Services.AddHostedService<TelegramBotWorker>();
+//builder.Services.AddHostedService<Q>();
 builder.Services.AddDataProtection();
 
 var app = builder.Build();

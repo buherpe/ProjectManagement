@@ -4,6 +4,43 @@ using RestSharp;
 
 namespace ProjectManagement
 {
+    //public class Q : BackgroundService
+    //{
+    //    private readonly IServiceScopeFactory _serviceScopeFactory;
+
+    //    public Q(IServiceScopeFactory serviceScopeFactory)
+    //    {
+    //        _serviceScopeFactory = serviceScopeFactory;
+    //    }
+
+    //    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    //    {
+    //        while (!stoppingToken.IsCancellationRequested)
+    //        {
+    //            using var scope = _serviceScopeFactory.CreateScope();
+    //            var context = scope.ServiceProvider.GetRequiredService<MyContext>();
+    //            context.CurrentUserId = 1;
+    //            var task = await context.Tasks.FirstOrDefaultAsync(x => x.Id == 123)
+    //                ?? new ProjectManagement.Pages.Tasks.Task();
+
+    //            task.Name = $"Тест админ";
+
+    //            //context.Update(task);
+    //            if (task.Id == 0)
+    //            {
+    //                context.Tasks.Add(task);
+    //            }
+
+
+    //            Console.WriteLine($"1");
+    //            await context.SaveChangesAsync();
+    //            Console.WriteLine($"2");
+
+    //            await Task.Delay(10000);
+    //        }
+    //    }
+    //}
+
     public class ExchangeRateUpdater : BackgroundService
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
@@ -29,6 +66,7 @@ namespace ProjectManagement
                 {
                     using var scope = _serviceScopeFactory.CreateScope();
                     var context = scope.ServiceProvider.GetRequiredService<MyContext>();
+                    context.CurrentUserId = 15;
                     var exchangeRateLastUpdateSetting = await context.Settings.FirstOrDefaultAsync(x =>
                         x.Name == "ExchangeRateLastUpdate");
 
@@ -66,13 +104,16 @@ namespace ProjectManagement
                             dbRate.Code = apiRate.Key;
                             dbRate.Rate = apiRate.Value;
 
-                            context.Update(dbRate);
+                            if (dbRate.Id == 0)
+                            {
+                                context.Currencies.Add(dbRate);
+                            }
                         }
 
                         exchangeRateLastUpdateSetting.Value = $"{DateTime.Now:O}";
 
                         _logger.LogInformation($"ExecuteAsync: Сохраняем");
-                        await context.SaveChangesAsync(stoppingToken);
+                        await context.SaveAsync(true, stoppingToken);
                         _logger.LogInformation($"ExecuteAsync: Сохранено. Обновлено курсов: {exchangeRateApiResponse.Data.Rates.Count}");
                     }
 
