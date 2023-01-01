@@ -104,10 +104,7 @@ namespace ProjectManagement
                             dbRate.Code = apiRate.Key;
                             dbRate.Rate = apiRate.Value;
 
-                            if (dbRate.Id == 0)
-                            {
-                                context.Currencies.Add(dbRate);
-                            }
+                            context.Add2(dbRate);
                         }
 
                         exchangeRateLastUpdateSetting.Value = $"{DateTime.Now:O}";
