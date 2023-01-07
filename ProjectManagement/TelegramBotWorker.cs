@@ -33,7 +33,7 @@ namespace ProjectManagement
                 using var scope = _serviceScopeFactory.CreateScope();
                 var context = scope.ServiceProvider.GetRequiredService<MyContext>();
                 var telegramBotToken = await context.Settings.FirstOrDefaultAsync(x =>
-                    x.Name == "TelegramBotToken");
+                    x.Name == "CurrencyConverterTelegramBotToken");
 
                 var botClient = new TelegramBotClient(telegramBotToken.Value);
 
