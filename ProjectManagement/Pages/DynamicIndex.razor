@@ -2,6 +2,7 @@
 @using ProjectManagement.Pages.CurrencyConverterChatSettings;
 @using ProjectManagement.Pages.Domains
 @using ProjectManagement.Pages.Currencies;
+@using ProjectManagement.Pages.Headaches;
 @using ProjectManagement.Pages.ProjectStatuses
 @using ProjectManagement.Pages.Projects
 @using ProjectManagement.Pages.Settings;
@@ -36,12 +37,15 @@
     case "currencies":
         <DataGridComponent View="@(new CurrencyAllView(_context))" TEntity="Currency" SetPageTitle="true" />
         break;
-    case "settings":
-        <DataGridComponent View="@(new SettingAllView(_context))" TEntity="Setting" SetPageTitle="true" />
-        break;
     case "currencyConverterChatSettings":
         <DataGridComponent View="@(new CurrencyConverterChatSettingAllView(_context))"
                    TEntity="CurrencyConverterChatSetting" SetPageTitle="true" />
+        break;
+    case "headaches":
+        <DataGridComponent View="@(new HeadacheAllView(_context))" TEntity="Headache" SetPageTitle="true" />
+        break;
+    case "settings":
+        <DataGridComponent View="@(new SettingAllView(_context))" TEntity="Setting" SetPageTitle="true" />
         break;
     default:
         break;

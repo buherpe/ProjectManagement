@@ -7,6 +7,7 @@ using ProjectManagement.Pages.Settings;
 using ProjectManagement.Pages.Currencies;
 using ProjectManagement.Pages.CurrencyConverterChatSettings;
 using System.Reflection.Metadata;
+using ProjectManagement.Pages.Headaches;
 
 namespace ProjectManagement
 {
@@ -48,5 +49,7 @@ namespace ProjectManagement
         public DbSet<Currency> Currencies { get; set; }
 
         public DbSet<CurrencyConverterChatSetting> CurrencyConverterChatSettings { get; set; }
+
+        public DbSet<Headache> Headaches { get; set; }
     }
 }
