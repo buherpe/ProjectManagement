@@ -16,25 +16,25 @@ namespace ProjectManagement.Pages.Headaches
         public DateTime? DateTime { get; set; }
 
         [Field(Serviced = true)]
-        public bool? IsHeadache { get; set; }
+        public bool IsHeadache { get; set; }
 
         [Field(DisplayName = "Головная боль"), Sort("IsHeadache")]
-        public string IsHeadacheString => IsHeadache.HasValue && IsHeadache.Value ? "Да" : "";
+        public string IsHeadacheString => IsHeadache ? "Да" : "";
 
         [Field(Serviced = true)]
-        public bool? Aura { get; set; }
+        public bool Aura { get; set; }
 
         [Field(DisplayName = "Аура"), Sort("Aura")]
-        public string AuraString => Aura.HasValue && Aura.Value ? "Да" : "";
+        public string AuraString => Aura ? "Да" : "";
 
         [Field(DisplayName = "Препарат")]
         public string Drug { get; set; }
 
         [Field(Serviced = true)]
-        public bool? DrugEffectiveness { get; set; }
+        public bool DrugEffectiveness { get; set; }
 
         [Field(DisplayName = "Эффективность препарата"), Sort("DrugEffectiveness")]
-        public string DrugEffectivenessString => DrugEffectiveness.HasValue && DrugEffectiveness.Value ? "Да" : "";
+        public string DrugEffectivenessString => DrugEffectiveness ? "Да" : "";
 
         [Field(DisplayName = "Интенсивность боли")]
         public int? PainPower { get; set; }
@@ -53,29 +53,29 @@ namespace ProjectManagement.Pages.Headaches
         public string NatureName => $"{Nature} - {((HeadacheNature)Nature).GetDisplayName()}";
 
         [Field(Serviced = true)]
-        public bool? IncreasedOnExertion { get; set; }
+        public bool IncreasedOnExertion { get; set; }
 
         [Field(DisplayName = "Усиление при нагрузке"), Sort("IncreasedOnExertion")]
         public string IncreasedOnExertionString =>
-            IncreasedOnExertion.HasValue && IncreasedOnExertion.Value ? "Да" : "";
+            IncreasedOnExertion ? "Да" : "";
 
         [Field(Serviced = true)]
-        public bool? Nausea { get; set; }
+        public bool Nausea { get; set; }
 
         [Field(DisplayName = "Тошнота"), Sort("Nausea")]
-        public string NauseaString => Nausea.HasValue && Nausea.Value ? "Да" : "";
+        public string NauseaString => Nausea ? "Да" : "";
 
         [Field(Serviced = true)]
-        public bool? Photophobia { get; set; }
+        public bool Photophobia { get; set; }
 
         [Field(DisplayName = "Фотофобия"), Sort("Photophobia")]
-        public string PhotophobiaString => Photophobia.HasValue && Photophobia.Value ? "Да" : "";
+        public string PhotophobiaString => Photophobia ? "Да" : "";
 
         [Field(Serviced = true)]
-        public bool? Phonophobia { get; set; }
+        public bool Phonophobia { get; set; }
 
         [Field(DisplayName = "Фонофобия"), Sort("Phonophobia")]
-        public string PhonophobiaString => Phonophobia.HasValue && Phonophobia.Value ? "Да" : "";
+        public string PhonophobiaString => Phonophobia ? "Да" : "";
 
         [Field(DisplayName = "Триггеры")]
         public string Triggers { get; set; }
@@ -131,13 +131,13 @@ namespace ProjectManagement.Pages.Headaches
 
         public DateTime? DateTime { get; set; }
 
-        public bool? IsHeadache { get; set; }
+        public bool IsHeadache { get; set; }
 
-        public bool? Aura { get; set; }
+        public bool Aura { get; set; }
 
         public string Drug { get; set; }
 
-        public bool? DrugEffectiveness { get; set; }
+        public bool DrugEffectiveness { get; set; }
 
         public int? PainPower { get; set; }
 
@@ -145,13 +145,13 @@ namespace ProjectManagement.Pages.Headaches
 
         public int Nature { get; set; }
 
-        public bool? IncreasedOnExertion { get; set; }
+        public bool IncreasedOnExertion { get; set; }
 
-        public bool? Nausea { get; set; }
+        public bool Nausea { get; set; }
 
-        public bool? Photophobia { get; set; }
+        public bool Photophobia { get; set; }
 
-        public bool? Phonophobia { get; set; }
+        public bool Phonophobia { get; set; }
 
         public string Triggers { get; set; }
 

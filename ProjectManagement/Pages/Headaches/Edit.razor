@@ -1,0 +1,116 @@
+﻿@page "/headaches/{id:int}"
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject NavigationManager NavigationManager
+
+<EditComponent TEntity="Headache" TView="HeadacheView"
+               TContext="MyContext" Id="Id" @ref="editComponent">
+    <MainTemplate>
+        <EditForm EditContext="editComponent.EditContext">
+            <DataAnnotationsValidator />
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Дата</span>
+                <InputDate Type="InputDateType.Date" class="form-control"
+                           @bind-Value="editComponent.Entity.DateTime" />
+            </div>
+
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="editComponent.Entity.IsHeadache" />
+                <label class="form-check-label">Головная боль</label>
+            </div>
+
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="editComponent.Entity.Aura" />
+                <label class="form-check-label">Аура</label>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Препарат</span>
+                <InputText @bind-Value="editComponent.Entity.Drug" class="form-control" />
+            </div>
+
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="editComponent.Entity.DrugEffectiveness" />
+                <label class="form-check-label">Эффективность препарата</label>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Интенсивность боли</span>
+                <InputNumber @bind-Value="editComponent.Entity.PainPower" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <label class="input-group-text">Локализация</label>
+                    <EnumInputSelectComponent TEntity="HeadacheLocalization"
+                                              @bind-Value2="editComponent.Entity.Localization" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <label class="input-group-text">Характер</label>
+                    <EnumInputSelectComponent TEntity="HeadacheNature"
+                                              @bind-Value2="editComponent.Entity.Nature" />
+                </div>
+            </div>
+
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="editComponent.Entity.IncreasedOnExertion" />
+                <label class="form-check-label">Усиление при нагрузке</label>
+            </div>
+
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="editComponent.Entity.Nausea" />
+                <label class="form-check-label">Тошнота</label>
+            </div>
+
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="editComponent.Entity.Photophobia" />
+                <label class="form-check-label">Фотофобия</label>
+            </div>
+
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="editComponent.Entity.Phonophobia" />
+                <label class="form-check-label">Фонофобия</label>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Триггеры</span>
+                <InputText @bind-Value="editComponent.Entity.Triggers" class="form-control" />
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Начало</span>
+                <InputText @bind-Value="editComponent.Entity.Start" class="form-control" />
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Конец</span>
+                <InputText @bind-Value="editComponent.Entity.End" class="form-control" />
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Комментарий</span>
+                <InputText @bind-Value="editComponent.Entity.Comment" class="form-control" />
+            </div>
+
+        </EditForm>
+    </MainTemplate>
+</EditComponent>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public EditComponent<Headache, HeadacheView, MyContext> editComponent { get; set; }
+}
