@@ -104,7 +104,7 @@ namespace ProjectManagement
                             dbRate.Code = apiRate.Key;
                             dbRate.Rate = apiRate.Value;
 
-                            context.Add2(dbRate);
+                            context.AddIfNew(dbRate);
                         }
 
                         exchangeRateLastUpdateSetting.Value = $"{DateTime.Now:O}";
