@@ -73,6 +73,7 @@ namespace ProjectManagement
 
                 using var scope = _serviceScopeFactory.CreateScope();
                 var context = scope.ServiceProvider.GetRequiredService<MyContext>();
+                context.CurrentUserId = 16;
 
                 var allCurrencies = await context.Currencies.ToListAsync();
 
@@ -138,6 +139,17 @@ namespace ProjectManagement
 
                 _log.LogDebug($"HandleUpdateAsync: str: {str}");
                 await botClient.SendTextMessageAsync(chatId, $"{str}", cancellationToken: cancellationToken, replyToMessageId: update.Message.MessageId, disableNotification: true);
+
+                if (groupSetting == null)
+                {
+                    groupSetting = new Pages.CurrencyConverterChatSettings.CurrencyConverterChatSetting();
+                    context.Add(groupSetting);
+                }
+
+                groupSetting.ChatId = chatId;
+                groupSetting.ConvertCount += 1;
+
+                await context.SaveAsync(true, cancellationToken);
             }
             catch (Exception e)
             {

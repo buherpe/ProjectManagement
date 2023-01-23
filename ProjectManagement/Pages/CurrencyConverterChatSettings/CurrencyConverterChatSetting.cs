@@ -14,6 +14,9 @@ namespace ProjectManagement.Pages.CurrencyConverterChatSettings
         [Field(DisplayName = "Валюты")]
         public string Currencies { get; set; }
 
+        [Field(DisplayName = "Кол-во конвертаций")]
+        public int ConvertCount { get; set; }
+
         public override string GetName() => "Конвертер валют → Настройки чата";
 
         public override string GetNames() => "Конвертер валют → Настройки чатов";
@@ -58,6 +61,8 @@ namespace ProjectManagement.Pages.CurrencyConverterChatSettings
         public long ChatId { get; set; }
 
         public string Currencies { get; set; }
+
+        public int ConvertCount { get; set; }
 
         public DateTime? CreatedAt { get; set; }
 
