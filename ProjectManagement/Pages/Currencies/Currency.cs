@@ -14,6 +14,9 @@ namespace ProjectManagement.Pages.Currencies
         [Field(DisplayName = "Курс")]
         public decimal Rate { get; set; }
 
+        [Field(DisplayName = "Символы")]
+        public string Symbols { get; set; }
+
         public override string GetName() => "Валюта";
 
         public override string GetNames() => "Валюты";
