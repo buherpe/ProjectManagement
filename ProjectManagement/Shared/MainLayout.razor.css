@@ -69,3 +69,10 @@ main {
         padding-right: 1.5rem !important;
     }
 }
+
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
