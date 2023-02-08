@@ -5,23 +5,20 @@
 
 <AuthorizeView>
     <NotAuthorized>
-        <div class="form-signin">
+        <div class="form-signin text-center">
             <EditForm Model="LoginFormModel" Context="Login">
-                <div>
-                    <label>
-                        Логин
-                        <InputText @bind-Value="LoginFormModel.Username" class="form-control"></InputText>
-                    </label>
+                <h1 class="h3 mb-3 fw-normal">Вход</h1>
+                <div class="form-floating">
+                    <InputText @bind-Value="LoginFormModel.Username"
+                               class="form-control" placeholder="Логин" />
+                    <label>Логин</label>
                 </div>
-                <div>
-                    <label>
-                        Пароль
-                        <InputText type="password" @bind-Value="LoginFormModel.Password" class="form-control"></InputText>
-                    </label>
+                <div class="form-floating">
+                    <InputText type="password" @bind-Value="LoginFormModel.Password"
+                               class="form-control" placeholder="Пароль" />
+                    <label>Пароль</label>
                 </div>
-                <div>
-                    <button @onclick="TryLogin" class="btn btn-primary">Войти</button>
-                </div>
+                <button @onclick="TryLogin" class="btn btn-primary mt-3 w-100">Войти</button>
             </EditForm>
         </div>
     </NotAuthorized>
