@@ -28,10 +28,20 @@ namespace ProjectManagement
         {
             try
             {
-                _log.LogInformation($"ExecuteAsync: Запускаем тг бота");
-
                 using var scope = _serviceScopeFactory.CreateScope();
                 var context = scope.ServiceProvider.GetRequiredService<MyContext>();
+                var telegramBotWorkerEnabled = bool.Parse((await context.Settings.FirstOrDefaultAsync(x =>
+                    x.Name == "CurrencyConverterTelegramBotWokerEnabled")).Value);
+
+                _log.LogInformation($"telegramBotWorkerEnabled: {telegramBotWorkerEnabled}");
+
+                if (!telegramBotWorkerEnabled)
+                {
+                    return;
+                }
+
+                _log.LogInformation($"ExecuteAsync: Запускаем тг бота");
+
                 var telegramBotToken = await context.Settings.FirstOrDefaultAsync(x =>
                     x.Name == "CurrencyConverterTelegramBotToken");
 

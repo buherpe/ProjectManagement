@@ -60,6 +60,27 @@ namespace ProjectManagement
         {
             _logger.LogInformation($"ExecuteAsync: Start");
 
+            try
+            {
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<MyContext>();
+                    var exchangeRateUpdaterEnabled = bool.Parse((await context.Settings.FirstOrDefaultAsync(x =>
+                                x.Name == "ExchangeRateUpdaterEnabled")).Value);
+
+                    _logger.LogInformation($"exchangeRateUpdaterEnabled: {exchangeRateUpdaterEnabled}");
+
+                    if (!exchangeRateUpdaterEnabled)
+                    {
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ExecuteAsync error");
+            }
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
