@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Debug\**" />
+    <Compile Remove="Release\**" />
     <Content Remove="Debug\**" />
+    <Content Remove="Release\**" />
     <EmbeddedResource Remove="Debug\**" />
+    <EmbeddedResource Remove="Release\**" />
     <None Remove="Debug\**" />
+    <None Remove="Release\**" />
   </ItemGroup>
 
   <ItemGroup>
