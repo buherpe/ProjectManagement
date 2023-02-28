@@ -19,33 +19,33 @@
 @switch (Page)
 {
     case "projects":
-        <DataGridComponent View="@(new ProjectAllView(_context))" TEntity="Project" SetPageTitle="true" />
+        <DataGridDbContexted View="@(new ProjectAllView(_context))" TEntity="Project" SetPageTitle="true" />
         break;
     case "tasks":
-        <DataGridComponent View="@(new TaskAllView(_context))" SetPageTitle="true"
+        <DataGridDbContexted View="@(new TaskAllView(_context))" SetPageTitle="true"
                    TEntity="ProjectManagement.Pages.Tasks.Task" />
         break;
     case "projectStatuses":
-        <DataGridComponent View="@(new ProjectStatusAllView(_context))" TEntity="ProjectStatus" SetPageTitle="true" />
+        <DataGridDbContexted View="@(new ProjectStatusAllView(_context))" TEntity="ProjectStatus" SetPageTitle="true" />
         break;
     case "users":
-        <DataGridComponent View="@(new UserAllView(_context))" TEntity="User" SetPageTitle="true" />
+        <DataGridDbContexted View="@(new UserAllView(_context))" TEntity="User" SetPageTitle="true" />
         break;
     case "domains":
-        <DataGridComponent View="@(new DomainAllView(_context))" TEntity="Domain" SetPageTitle="true" />
+        <DataGridDbContexted View="@(new DomainAllView(_context))" TEntity="Domain" SetPageTitle="true" />
         break;
     case "currencies":
-        <DataGridComponent View="@(new CurrencyAllView(_context))" TEntity="Currency" SetPageTitle="true" />
+        <DataGridDbContexted View="@(new CurrencyAllView(_context))" TEntity="Currency" SetPageTitle="true" />
         break;
     case "currencyConverterChatSettings":
-        <DataGridComponent View="@(new CurrencyConverterChatSettingAllView(_context))"
+        <DataGridDbContexted View="@(new CurrencyConverterChatSettingAllView(_context))"
                    TEntity="CurrencyConverterChatSetting" SetPageTitle="true" />
         break;
     case "headaches":
-        <DataGridComponent View="@(new HeadacheAllView(_context))" TEntity="Headache" SetPageTitle="true" />
+        <DataGridDbContexted View="@(new HeadacheAllView(_context))" TEntity="Headache" SetPageTitle="true" />
         break;
     case "settings":
-        <DataGridComponent View="@(new SettingAllView(_context))" TEntity="Setting" SetPageTitle="true" />
+        <DataGridDbContexted View="@(new SettingAllView(_context))" TEntity="Setting" SetPageTitle="true" />
         break;
     default:
         break;

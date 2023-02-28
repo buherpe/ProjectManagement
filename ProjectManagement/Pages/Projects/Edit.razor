@@ -41,7 +41,7 @@
         <hr />
         @if (editComponent.Entity.Id != 0)
         {
-            <DataGridComponent View=@(new TasksByProjectView(_context2, editComponent.Entity.Id))
+            <DataGridDbContexted View=@(new TasksByProjectView(_context2, editComponent.Entity.Id))
                            CreateButtonVisible="false" TEntity="ProjectManagement.Pages.Tasks.Task" />
         }
     </FooterTemplate>
