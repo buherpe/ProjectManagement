@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.Currencies;
-using RestSharp;
-
 namespace ProjectManagement
 {
     //public class Q : BackgroundService
@@ -104,20 +102,23 @@ namespace ProjectManagement
                         _logger.LogInformation($"ExecuteAsync: Курс протух, обновляем");
 
                         var urlSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiUrl");
-                        var client = new RestClient(urlSetting.Value);
+                        var client = new HttpClient();
 
-                        var request = new RestRequest();
+                        var request = new HttpRequestMessage(HttpMethod.Get, urlSetting.Value);
 
                         var headerSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiHeader");
                         var confHeader = headerSetting.Value;
-                        request.AddHeader(confHeader.Split(':')[0], confHeader.Split(':')[1]);
+                        request.Headers.Add(confHeader.Split(':')[0], confHeader.Split(':')[1]);
 
                         _logger.LogInformation($"ExecuteAsync: Отправляем запрос к апи");
-                        var exchangeRateApiResponseResponse = await client.GetAsync(request);
-                        var exchangeRateApiResponse = client.Deserialize<ExchangeRateApiResponse>(exchangeRateApiResponseResponse);
-                        _logger.LogInformation($"ExecuteAsync: Ответ апи: {exchangeRateApiResponseResponse.Content}");
+                        var exchangeRateApiResponseResponse = await client.SendAsync(request);
+                        exchangeRateApiResponseResponse.EnsureSuccessStatusCode();
+
+                        _logger.LogInformation($"ExecuteAsync: Ответ апи: {await exchangeRateApiResponseResponse.Content.ReadAsStringAsync()}");
+
+                        var exchangeRateApiResponse = await exchangeRateApiResponseResponse.Content.ReadFromJsonAsync<ExchangeRateApiResponse>();
                         
-                        foreach (var apiRate in exchangeRateApiResponse.Data.Rates)
+                        foreach (var apiRate in exchangeRateApiResponse.Rates)
                         {
                             var dbRate = await context.Currencies.FirstOrDefaultAsync(x => x.Code == apiRate.Key)
                                 ?? new Currency();
@@ -132,7 +133,7 @@ namespace ProjectManagement
 
                         _logger.LogInformation($"ExecuteAsync: Сохраняем");
                         await context.SaveAsync(true, stoppingToken);
-                        _logger.LogInformation($"ExecuteAsync: Сохранено. Обновлено курсов: {exchangeRateApiResponse.Data.Rates.Count}");
+                        _logger.LogInformation($"ExecuteAsync: Сохранено. Обновлено курсов: {exchangeRateApiResponse.Rates.Count}");
                     }
 
                     await Task.Delay(60_000, stoppingToken);
