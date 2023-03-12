@@ -6,6 +6,7 @@ using Blazored.Modal;
 using RazorClassLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Blazored.Toast;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddDbContextFactory<MyContext>(x =>
 builder.Services.AddScoped<WebsiteAuthenticator>();
 builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<WebsiteAuthenticator>());
 builder.Services.AddBlazoredModal();
+builder.Services.AddBlazoredToast();
 builder.Services.AddHostedService<ExchangeRateUpdater>();
 builder.Services.AddHostedService<TelegramBotWorker>();
 //builder.Services.AddHostedService<Q>();
