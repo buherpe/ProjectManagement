@@ -1,7 +1,5 @@
 ﻿@page "/projectStatuses/{id:int}"
 
-@inject NavigationManager NavigationManager
-
 <EditComponent TEntity="ProjectStatus" TView="ProjectStatusView" TContext="MyContext"
                Id="Id" @ref="editComponent">
     <MainTemplate>

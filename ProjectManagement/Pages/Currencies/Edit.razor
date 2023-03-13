@@ -2,8 +2,6 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
 
-@inject NavigationManager NavigationManager
-
 <EditComponent TEntity="Currency" TView="CurrencyView" TContext="MyContext" Id="Id" @ref="editComponent">
     <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
