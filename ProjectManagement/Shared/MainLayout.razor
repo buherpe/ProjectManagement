@@ -33,7 +33,9 @@
 
             <main>
                 <div class="top-row px-4">
-                    <LoginDisplay />
+                    <a href="users/@(@context.User?.FindFirst("Id")?.Value)">Пользователь: @context.User?.FindFirst("Fullname")?.Value</a>
+
+                    <button type="button" class="btn btn-link" @onclick="TryLogout">Выйти</button>
                 </div>
 
                 <article class="content px-4">
@@ -53,5 +55,10 @@
     private async Task TryLogin()
     {
         await WebsiteAuthenticator.LoginAsync(LoginFormModel);
+    }
+
+    private async Task TryLogout()
+    {
+        await WebsiteAuthenticator.LogoutAsync();
     }
 }
