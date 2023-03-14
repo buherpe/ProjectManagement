@@ -11,8 +11,14 @@ namespace ProjectManagement.Pages.Settings
         [Field(DisplayName = "Наименование")]
         public string Name { get; set; }
 
-        [Field(DisplayName = "Значение")]
+        [Field(Serviced = true)]
         public string Value { get; set; }
+
+        [Field(Serviced = true)]
+        public bool Encrypted { get; set; }
+
+        [Field(DisplayName = "Значение")]
+        public string Value2 => Encrypted ? "***" : Value;
 
         public override string GetName() => "Настройка";
 
@@ -57,6 +63,8 @@ namespace ProjectManagement.Pages.Settings
         public string Name { get; set; }
 
         public string Value { get; set; }
+
+        public bool Encrypted { get; set; }
 
         public DateTime? CreatedAt { get; set; }
 

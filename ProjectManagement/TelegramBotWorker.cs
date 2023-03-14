@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.Currencies;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -16,12 +17,17 @@ namespace ProjectManagement
 
         private readonly IConfiguration _configuration;
 
-        public TelegramBotWorker(IServiceScopeFactory serviceScopeFactory, IConfiguration configuration,
-            ILogger<TelegramBotWorker> log)
+        private readonly IDataProtectionProvider _provider;
+
+        public TelegramBotWorker(IServiceScopeFactory serviceScopeFactory,
+            IConfiguration configuration,
+            ILogger<TelegramBotWorker> log,
+            IDataProtectionProvider provider)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _configuration = configuration;
             _log = log;
+            _provider = provider;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -45,7 +51,19 @@ namespace ProjectManagement
                 var telegramBotToken = await context.Settings.FirstOrDefaultAsync(x =>
                     x.Name == "CurrencyConverterTelegramBotToken");
 
-                var botClient = new TelegramBotClient(telegramBotToken.Value);
+                string token;
+
+                if (telegramBotToken.Encrypted)
+                {
+                    var protector = _provider.CreateProtector(_configuration["DataProtectionPurpose"]);
+                    token = protector.Unprotect(telegramBotToken.Value);
+                }
+                else
+                {
+                    token = telegramBotToken.Value;
+                }
+
+                var botClient = new TelegramBotClient(token);
 
                 var me = await botClient.GetMeAsync(cancellationToken);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.Currencies;
 namespace ProjectManagement
 {
@@ -47,11 +48,17 @@ namespace ProjectManagement
 
         private readonly IConfiguration _configuration;
 
-        public ExchangeRateUpdater(IServiceScopeFactory serviceScopeFactory, ILogger<ExchangeRateUpdater> logger, IConfiguration configuration)
+        private readonly IDataProtectionProvider _provider;
+
+        public ExchangeRateUpdater(IServiceScopeFactory serviceScopeFactory,
+            ILogger<ExchangeRateUpdater> logger,
+            IConfiguration configuration,
+            IDataProtectionProvider provider)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _logger = logger;
             _configuration = configuration;
+            _provider = provider;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -107,7 +114,19 @@ namespace ProjectManagement
                         var request = new HttpRequestMessage(HttpMethod.Get, urlSetting.Value);
 
                         var headerSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiHeader");
-                        var confHeader = headerSetting.Value;
+
+                        string confHeader;
+
+                        if (headerSetting.Encrypted)
+                        {
+                            var protector = _provider.CreateProtector(_configuration["DataProtectionPurpose"]);
+                            confHeader = protector.Unprotect(headerSetting.Value);
+                        }
+                        else
+                        {
+                            confHeader = headerSetting.Value;
+                        }
+
                         request.Headers.Add(confHeader.Split(':')[0], confHeader.Split(':')[1]);
 
                         _logger.LogInformation($"ExecuteAsync: Отправляем запрос к апи");
@@ -117,7 +136,7 @@ namespace ProjectManagement
                         _logger.LogInformation($"ExecuteAsync: Ответ апи: {await exchangeRateApiResponseResponse.Content.ReadAsStringAsync()}");
 
                         var exchangeRateApiResponse = await exchangeRateApiResponseResponse.Content.ReadFromJsonAsync<ExchangeRateApiResponse>();
-                        
+
                         foreach (var apiRate in exchangeRateApiResponse.Rates)
                         {
                             var dbRate = await context.Currencies.FirstOrDefaultAsync(x => x.Code == apiRate.Key)

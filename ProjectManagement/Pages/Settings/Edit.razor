@@ -1,8 +1,10 @@
 ﻿@page "/settings/{id:int}"
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.DataProtection
+@inject IDataProtectionProvider _provider
+@inject IConfiguration _configuration
 
-<EditComponent TEntity="Setting" TView="SettingView" TContext="MyContext" Id="Id" @ref="editComponent">
+<EditComponent TEntity="Setting" TView="SettingView" TContext="MyContext" Id="Id" @ref="editComponent"
+               OnFieldChanged="@FieldChanged">
     <MainTemplate>
         <EditForm EditContext="editComponent.EditContext">
             <DataAnnotationsValidator />
@@ -15,6 +17,11 @@
             <div class="input-group mb-3">
                 <span class="input-group-text">Значение</span>
                 <InputText @bind-Value="editComponent.Entity.Value" class="form-control" />
+
+                <button @onclick="Encrypt" type="button" class="btn btn-outline-primary"
+                        disabled="@editComponent.Entity.Encrypted">
+                    @(editComponent.Entity.Encrypted ? "Зашифровано" : "Зашифровать")
+                </button>
             </div>
 
         </EditForm>
@@ -26,4 +33,27 @@
     public int Id { get; set; }
 
     public EditComponent<Setting, SettingView, MyContext> editComponent { get; set; }
+
+    public void Encrypt()
+    {
+        var protector = _provider.CreateProtector(_configuration["DataProtectionPurpose"]);
+
+        editComponent.Entity.Value = protector.Protect(editComponent.Entity.Value);
+
+        editComponent.Entity.Encrypted = true;
+
+        // todo mark as modified
+    }
+
+    public void FieldChanged(FieldChangedEventArgs e)
+    {
+        if (e.FieldIdentifier.FieldName != nameof(editComponent.Entity.Value))
+        {
+            return;
+        }
+
+        var valueField = editComponent.EditContext.Field(nameof(editComponent.Entity.Value));
+
+        editComponent.Entity.Encrypted = false;
+    }
 }
