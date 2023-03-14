@@ -17,7 +17,7 @@ namespace ProjectManagement.Pages.Settings
         [Field(Serviced = true)]
         public bool Encrypted { get; set; }
 
-        [Field(DisplayName = "Значение")]
+        [Field(DisplayName = "Значение"), Sort("Value")]
         public string Value2 => Encrypted ? "***" : Value;
 
         public override string GetName() => "Настройка";
