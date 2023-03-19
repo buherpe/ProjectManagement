@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.Currencies;
+using RazorClassLibrary;
+
 namespace ProjectManagement
 {
     //public class Q : BackgroundService
@@ -48,17 +49,13 @@ namespace ProjectManagement
 
         private readonly IConfiguration _configuration;
 
-        private readonly IDataProtectionProvider _provider;
-
         public ExchangeRateUpdater(IServiceScopeFactory serviceScopeFactory,
             ILogger<ExchangeRateUpdater> logger,
-            IConfiguration configuration,
-            IDataProtectionProvider provider)
+            IConfiguration configuration)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _logger = logger;
             _configuration = configuration;
-            _provider = provider;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -119,8 +116,8 @@ namespace ProjectManagement
 
                         if (headerSetting.Encrypted)
                         {
-                            var protector = _provider.CreateProtector(_configuration["DataProtectionPurpose"]);
-                            confHeader = protector.Unprotect(headerSetting.Value);
+                            var aesGcmService = new AesGcmService(_configuration["EncryptionPassword"]);
+                            confHeader = aesGcmService.Decrypt(headerSetting.Value);
                         }
                         else
                         {

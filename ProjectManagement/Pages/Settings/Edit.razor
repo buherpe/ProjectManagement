@@ -1,6 +1,4 @@
 ﻿@page "/settings/{id:int}"
-@using Microsoft.AspNetCore.DataProtection
-@inject IDataProtectionProvider _provider
 @inject IConfiguration _configuration
 
 <EditComponent TEntity="Setting" TView="SettingView" TContext="MyContext" Id="Id" @ref="editComponent"
@@ -36,9 +34,9 @@
 
     public void Encrypt()
     {
-        var protector = _provider.CreateProtector(_configuration["DataProtectionPurpose"]);
+        using var aesGcmService = new AesGcmService(_configuration["EncryptionPassword"]);
 
-        editComponent.Entity.Value = protector.Protect(editComponent.Entity.Value);
+        editComponent.Entity.Value = aesGcmService.Encrypt(editComponent.Entity.Value);
 
         editComponent.Entity.Encrypted = true;
 

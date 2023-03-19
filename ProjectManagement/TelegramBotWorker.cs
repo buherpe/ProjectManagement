@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Pages.Currencies;
+using RazorClassLibrary;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Telegram.Bot;
@@ -17,17 +17,13 @@ namespace ProjectManagement
 
         private readonly IConfiguration _configuration;
 
-        private readonly IDataProtectionProvider _provider;
-
         public TelegramBotWorker(IServiceScopeFactory serviceScopeFactory,
             IConfiguration configuration,
-            ILogger<TelegramBotWorker> log,
-            IDataProtectionProvider provider)
+            ILogger<TelegramBotWorker> log)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _configuration = configuration;
             _log = log;
-            _provider = provider;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -55,8 +51,8 @@ namespace ProjectManagement
 
                 if (telegramBotToken.Encrypted)
                 {
-                    var protector = _provider.CreateProtector(_configuration["DataProtectionPurpose"]);
-                    token = protector.Unprotect(telegramBotToken.Value);
+                    var aesGcmService = new AesGcmService(_configuration["EncryptionPassword"]);
+                    token = aesGcmService.Decrypt(telegramBotToken.Value);
                 }
                 else
                 {
