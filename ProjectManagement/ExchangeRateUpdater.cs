@@ -81,6 +81,7 @@ namespace ProjectManagement
             catch (Exception ex)
             {
                 _logger.LogError(ex, "ExecuteAsync error");
+                return;
             }
 
             while (!stoppingToken.IsCancellationRequested)
