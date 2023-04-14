@@ -62,10 +62,11 @@ namespace ProjectManagement
         {
             _logger.LogInformation($"ExecuteAsync: Start");
 
-            try
+            while (!stoppingToken.IsCancellationRequested)
             {
-                using (var scope = _serviceScopeFactory.CreateScope())
+                try
                 {
+                    using var scope = _serviceScopeFactory.CreateScope();
                     var context = scope.ServiceProvider.GetRequiredService<MyContext>();
                     var exchangeRateUpdaterEnabled = bool.Parse((await context.Settings.FirstOrDefaultAsync(x =>
                                 x.Name == "ExchangeRateUpdaterEnabled")).Value);
@@ -74,22 +75,9 @@ namespace ProjectManagement
 
                     if (!exchangeRateUpdaterEnabled)
                     {
-                        return;
+                        break;
                     }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "ExecuteAsync error");
-                return;
-            }
 
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                try
-                {
-                    using var scope = _serviceScopeFactory.CreateScope();
-                    var context = scope.ServiceProvider.GetRequiredService<MyContext>();
                     context.CurrentUserId = 15;
                     var exchangeRateLastUpdateSetting = await context.Settings.FirstOrDefaultAsync(x =>
                         x.Name == "ExchangeRateLastUpdate");
@@ -155,10 +143,14 @@ namespace ProjectManagement
 
                     await Task.Delay(60_000, stoppingToken);
                 }
-                catch (TaskCanceledException) { }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "ExecuteAsync error");
+                    await Task.Delay(5000, stoppingToken);
                 }
             }
         }
