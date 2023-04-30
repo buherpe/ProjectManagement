@@ -58,11 +58,11 @@ namespace ProjectManagement
             _configuration = configuration;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"ExecuteAsync: Start");
 
-            while (!stoppingToken.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -71,77 +71,14 @@ namespace ProjectManagement
                     var exchangeRateUpdaterEnabled = bool.Parse((await context.Settings.FirstOrDefaultAsync(x =>
                                 x.Name == "ExchangeRateUpdaterEnabled")).Value);
 
-                    _logger.LogInformation($"exchangeRateUpdaterEnabled: {exchangeRateUpdaterEnabled}");
+                    //_logger.LogInformation($"exchangeRateUpdaterEnabled: {exchangeRateUpdaterEnabled}");
 
-                    if (!exchangeRateUpdaterEnabled)
+                    if (exchangeRateUpdaterEnabled)
                     {
-                        break;
+                        await UpdateRatesAsync(cancellationToken);
                     }
 
-                    context.CurrentUserId = 15;
-                    var exchangeRateLastUpdateSetting = await context.Settings.FirstOrDefaultAsync(x =>
-                        x.Name == "ExchangeRateLastUpdate");
-
-                    //_logger.LogInformation($"ExecuteAsync: Последнее обновление курса: " +
-                    //    $"{exchangeRateLastUpdateSetting.Value}");
-
-                    var updateRateSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiUpdateRate");
-
-                    if (exchangeRateLastUpdateSetting == null ||
-                        string.IsNullOrEmpty(exchangeRateLastUpdateSetting.Value) ||
-                        DateTime.Now - DateTime.Parse(exchangeRateLastUpdateSetting.Value)
-                            > TimeSpan.FromMinutes(int.Parse(updateRateSetting.Value)))
-                    {
-                        _logger.LogInformation($"ExecuteAsync: Курс протух, обновляем");
-
-                        var urlSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiUrl");
-                        var client = new HttpClient();
-
-                        var request = new HttpRequestMessage(HttpMethod.Get, urlSetting.Value);
-
-                        var headerSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiHeader");
-
-                        string confHeader;
-
-                        if (headerSetting.Encrypted)
-                        {
-                            var aesGcmService = new AesGcmService(_configuration["EncryptionPassword"]);
-                            confHeader = aesGcmService.Decrypt(headerSetting.Value);
-                        }
-                        else
-                        {
-                            confHeader = headerSetting.Value;
-                        }
-
-                        request.Headers.Add(confHeader.Split(':')[0], confHeader.Split(':')[1]);
-
-                        _logger.LogInformation($"ExecuteAsync: Отправляем запрос к апи");
-                        var exchangeRateApiResponseResponse = await client.SendAsync(request);
-                        exchangeRateApiResponseResponse.EnsureSuccessStatusCode();
-
-                        _logger.LogInformation($"ExecuteAsync: Ответ апи: {await exchangeRateApiResponseResponse.Content.ReadAsStringAsync()}");
-
-                        var exchangeRateApiResponse = await exchangeRateApiResponseResponse.Content.ReadFromJsonAsync<ExchangeRateApiResponse>();
-
-                        foreach (var apiRate in exchangeRateApiResponse.Rates)
-                        {
-                            var dbRate = await context.Currencies.FirstOrDefaultAsync(x => x.Code == apiRate.Key)
-                                ?? new Currency();
-
-                            dbRate.Code = apiRate.Key;
-                            dbRate.Rate = apiRate.Value;
-
-                            context.AddIfNew(dbRate);
-                        }
-
-                        exchangeRateLastUpdateSetting.Value = $"{DateTime.Now:O}";
-
-                        _logger.LogInformation($"ExecuteAsync: Сохраняем");
-                        await context.SaveAsync(true, stoppingToken);
-                        _logger.LogInformation($"ExecuteAsync: Сохранено. Обновлено курсов: {exchangeRateApiResponse.Rates.Count}");
-                    }
-
-                    await Task.Delay(60_000, stoppingToken);
+                    await Task.Delay(60_000, cancellationToken);
                 }
                 catch (TaskCanceledException)
                 {
@@ -150,8 +87,77 @@ namespace ProjectManagement
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "ExecuteAsync error");
-                    await Task.Delay(5000, stoppingToken);
+                    await Task.Delay(5000, cancellationToken);
                 }
+            }
+        }
+
+        public async Task UpdateRatesAsync(CancellationToken cancellationToken)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<MyContext>();
+
+            context.CurrentUserId = 15;
+            var exchangeRateLastUpdateSetting = await context.Settings.FirstOrDefaultAsync(x =>
+                x.Name == "ExchangeRateLastUpdate");
+
+            //_logger.LogInformation($"ExecuteAsync: Последнее обновление курса: " +
+            //    $"{exchangeRateLastUpdateSetting.Value}");
+
+            var updateRateSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiUpdateRate");
+
+            if (exchangeRateLastUpdateSetting == null ||
+                string.IsNullOrEmpty(exchangeRateLastUpdateSetting.Value) ||
+                DateTime.Now - DateTime.Parse(exchangeRateLastUpdateSetting.Value)
+                    > TimeSpan.FromMinutes(int.Parse(updateRateSetting.Value)))
+            {
+                _logger.LogInformation($"ExecuteAsync: Курс протух, обновляем");
+
+                var urlSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiUrl");
+                var client = new HttpClient();
+
+                var request = new HttpRequestMessage(HttpMethod.Get, urlSetting.Value);
+
+                var headerSetting = await context.Settings.FirstOrDefaultAsync(x => x.Name == "ExchangeRateApiHeader");
+
+                string confHeader;
+
+                if (headerSetting.Encrypted)
+                {
+                    var aesGcmService = new AesGcmService(_configuration["EncryptionPassword"]);
+                    confHeader = aesGcmService.Decrypt(headerSetting.Value);
+                }
+                else
+                {
+                    confHeader = headerSetting.Value;
+                }
+
+                request.Headers.Add(confHeader.Split(':')[0], confHeader.Split(':')[1]);
+
+                _logger.LogInformation($"ExecuteAsync: Отправляем запрос к апи");
+                var exchangeRateApiResponseResponse = await client.SendAsync(request);
+                exchangeRateApiResponseResponse.EnsureSuccessStatusCode();
+
+                _logger.LogInformation($"ExecuteAsync: Ответ апи: {await exchangeRateApiResponseResponse.Content.ReadAsStringAsync()}");
+
+                var exchangeRateApiResponse = await exchangeRateApiResponseResponse.Content.ReadFromJsonAsync<ExchangeRateApiResponse>();
+
+                foreach (var apiRate in exchangeRateApiResponse.Rates)
+                {
+                    var dbRate = await context.Currencies.FirstOrDefaultAsync(x => x.Code == apiRate.Key)
+                        ?? new Currency();
+
+                    dbRate.Code = apiRate.Key;
+                    dbRate.Rate = apiRate.Value;
+
+                    context.AddIfNew(dbRate);
+                }
+
+                exchangeRateLastUpdateSetting.Value = $"{DateTime.Now:O}";
+
+                _logger.LogInformation($"ExecuteAsync: Сохраняем");
+                await context.SaveAsync(true, cancellationToken);
+                _logger.LogInformation($"ExecuteAsync: Сохранено. Обновлено курсов: {exchangeRateApiResponse.Rates.Count}");
             }
         }
     }
