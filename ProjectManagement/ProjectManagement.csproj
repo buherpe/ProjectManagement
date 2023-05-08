@@ -4,6 +4,9 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,12 +19,16 @@
 
   <ItemGroup>
     <Compile Remove="Debug\**" />
+    <Compile Remove="logs\**" />
     <Compile Remove="Release\**" />
     <Content Remove="Debug\**" />
+    <Content Remove="logs\**" />
     <Content Remove="Release\**" />
     <EmbeddedResource Remove="Debug\**" />
+    <EmbeddedResource Remove="logs\**" />
     <EmbeddedResource Remove="Release\**" />
     <None Remove="Debug\**" />
+    <None Remove="logs\**" />
     <None Remove="Release\**" />
   </ItemGroup>
 
@@ -45,6 +52,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\RazorClassLibrary\RazorClassLibrary.csproj" />
+    <ProjectReference Include="..\..\TgHelper\TgHelper\TgHelper.csproj" />
   </ItemGroup>
 
 </Project>
