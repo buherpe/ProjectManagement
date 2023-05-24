@@ -82,6 +82,7 @@ namespace ProjectManagement
                 }
                 catch (TaskCanceledException)
                 {
+                    _logger.LogInformation($"ExecuteAsync: Task canceled");
                     break;
                 }
                 catch (Exception ex)
@@ -135,7 +136,18 @@ namespace ProjectManagement
                 request.Headers.Add(confHeader.Split(':')[0], confHeader.Split(':')[1]);
 
                 _logger.LogInformation($"ExecuteAsync: Отправляем запрос к апи");
-                var exchangeRateApiResponseResponse = await client.SendAsync(request);
+
+                HttpResponseMessage exchangeRateApiResponseResponse;
+
+                try
+                {
+                    exchangeRateApiResponseResponse = await client.SendAsync(request);
+                }
+                catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+                {
+                    throw ex.InnerException;
+                }
+                
                 exchangeRateApiResponseResponse.EnsureSuccessStatusCode();
 
                 _logger.LogInformation($"ExecuteAsync: Ответ апи: {await exchangeRateApiResponseResponse.Content.ReadAsStringAsync()}");
