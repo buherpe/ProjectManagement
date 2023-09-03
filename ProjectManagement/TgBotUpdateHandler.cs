@@ -100,7 +100,7 @@ namespace ProjectManagement
                 }
 
                 _log.LogDebug($"HandleUpdateAsync: str: {str}");
-                await _bot.SendTextMessageAsync(chatId, $"{str}", cancellationToken: cancellationToken, replyToMessageId: update.Message.MessageId, disableNotification: true);
+                await _bot.SendTextMessageAsync(chatId, $"{str}", cancellationToken: cancellationToken, disableNotification: true);
 
                 if (groupSetting == null)
                 {
