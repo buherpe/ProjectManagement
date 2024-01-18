@@ -100,7 +100,13 @@ public class TgBotUpdateHandler
             }
 
             _log.LogDebug($"HandleUpdateAsync: str: {str}");
-            await _bot.SendTextMessageAsync(chatId, $"{str}", cancellationToken: cancellationToken, disableNotification: true);
+            await _bot.SendTextMessageAsync(
+                chatId: chatId, 
+                text: $"{str}", 
+                messageThreadId: update.Message.MessageThreadId,
+                disableNotification: true,
+                cancellationToken: cancellationToken
+                );
 
             if (groupSetting == null)
             {
