@@ -6,154 +6,153 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace ProjectManagement
+namespace ProjectManagement;
+
+public class TgBotUpdateHandler
 {
-    public class TgBotUpdateHandler
+    private readonly ITelegramBotClient _bot;
+    private readonly ILogger<TgBotUpdateHandler> _log;
+    private readonly IDbContextFactory<MyContext> _contextFactory;
+
+    public TgBotUpdateHandler(ITelegramBotClient bot, ILogger<TgBotUpdateHandler> log,
+        IDbContextFactory<MyContext> contextFactory)
     {
-        private readonly ITelegramBotClient _bot;
-        private readonly ILogger<TgBotUpdateHandler> _log;
-        private readonly IDbContextFactory<MyContext> _contextFactory;
+        _bot = bot;
+        _log = log;
+        _contextFactory = contextFactory;
+    }
 
-        public TgBotUpdateHandler(ITelegramBotClient bot, ILogger<TgBotUpdateHandler> log,
-            IDbContextFactory<MyContext> contextFactory)
+    public async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken)
+    {
+        try
         {
-            _bot = bot;
-            _log = log;
-            _contextFactory = contextFactory;
-        }
+            if (update.Type != UpdateType.Message)
+                return;
+            if (update.Message.Type != MessageType.Text)
+                return;
 
-        public async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken)
-        {
-            try
+            var chatId = update.Message.Chat.Id;
+
+            var defaultCurrencies = $"usd, rub";
+
+            var context = _contextFactory.CreateDbContext();
+            context.CurrentUserId = 16;
+
+            var allCurrencies = await context.Currencies.ToListAsync();
+
+            var currenciesWithSymbols = allCurrencies.Where(x => !string.IsNullOrEmpty(x.Symbols)).ToList();
+            var sumAndCurrencies = ParseSumAndCurrency(currenciesWithSymbols, update.Message.Text);
+
+            var groupSetting = await context.CurrencyConverterChatSettings
+                .FirstOrDefaultAsync(x => x.ChatId == update.Message.Chat.Id);
+
+            var sourceCurrencyStr = (groupSetting?.Currencies ?? defaultCurrencies)
+                .Split(',').Select(x => x.Trim()).Select(x => x.ToUpperInvariant()).ToList();
+
+            sumAndCurrencies = sumAndCurrencies.Where(x => sourceCurrencyStr.Any(c => x.Currency.Code == c))
+                .ToList();
+
+            if (!sumAndCurrencies.Any())
             {
-                if (update.Type != UpdateType.Message)
-                    return;
-                if (update.Message.Type != MessageType.Text)
-                    return;
+                return;
+            }
 
-                var chatId = update.Message.Chat.Id;
+            _log.LogInformation($"HandleUpdateAsync: Чат: {chatId}, юзер: {update.Message.From.Id}, текст: {update.Message.Text}");
 
-                var defaultCurrencies = $"usd, rub";
+            var str = $"";
 
-                var context = _contextFactory.CreateDbContext();
-                context.CurrentUserId = 16;
+            foreach (var sumAndCurrency in sumAndCurrencies)
+            {
+                _log.LogDebug($"HandleUpdateAsync: sumAndCurrency: {sumAndCurrency}");
 
-                var allCurrencies = await context.Currencies.ToListAsync();
-
-                var currenciesWithSymbols = allCurrencies.Where(x => !string.IsNullOrEmpty(x.Symbols)).ToList();
-                var sumAndCurrencies = ParseSumAndCurrency(currenciesWithSymbols, update.Message.Text);
-
-                var groupSetting = await context.CurrencyConverterChatSettings
-                    .FirstOrDefaultAsync(x => x.ChatId == update.Message.Chat.Id);
-
-                var sourceCurrencyStr = (groupSetting?.Currencies ?? defaultCurrencies)
-                    .Split(',').Select(x => x.Trim()).Select(x => x.ToUpperInvariant()).ToList();
-
-                sumAndCurrencies = sumAndCurrencies.Where(x => sourceCurrencyStr.Any(c => x.Currency.Code == c))
+                var targetCurrenciesStr = (groupSetting?.Currencies ?? defaultCurrencies)
+                    .Split(',').Select(x => x.Trim()).Select(x => x.ToUpperInvariant())
+                    .Where(x => x != sumAndCurrency.Currency.Code)
                     .ToList();
 
-                if (!sumAndCurrencies.Any())
+                var targetCurrencies = targetCurrenciesStr
+                    .Select(x => allCurrencies.FirstOrDefault(c => c.Code == x))
+                    .ToList();
+
+                var sums = new List<string>();
+
+                foreach (var targetCurrency in targetCurrencies)
                 {
-                    return;
-                }
+                    _log.LogDebug($"HandleUpdateAsync: targetCurrency: {targetCurrency}");
 
-                _log.LogInformation($"HandleUpdateAsync: Чат: {chatId}, юзер: {update.Message.From.Id}, текст: {update.Message.Text}");
+                    var source = sumAndCurrency.Currency.Rate;
+                    var target = targetCurrency.Rate;
+                    var exchangeRate = target / source;
 
-                var str = $"";
+                    var sum = sumAndCurrency.Sum * exchangeRate;
+                    var symbol = targetCurrency.Symbols?.Split('|').FirstOrDefault() ?? targetCurrency.Code;
 
-                foreach (var sumAndCurrency in sumAndCurrencies)
-                {
-                    _log.LogDebug($"HandleUpdateAsync: sumAndCurrency: {sumAndCurrency}");
-
-                    var targetCurrenciesStr = (groupSetting?.Currencies ?? defaultCurrencies)
-                        .Split(',').Select(x => x.Trim()).Select(x => x.ToUpperInvariant())
-                        .Where(x => x != sumAndCurrency.Currency.Code)
-                        .ToList();
-
-                    var targetCurrencies = targetCurrenciesStr
-                        .Select(x => allCurrencies.FirstOrDefault(c => c.Code == x))
-                        .ToList();
-
-                    var sums = new List<string>();
-
-                    foreach (var targetCurrency in targetCurrencies)
+                    if (sum > 10)
                     {
-                        _log.LogDebug($"HandleUpdateAsync: targetCurrency: {targetCurrency}");
-
-                        var source = sumAndCurrency.Currency.Rate;
-                        var target = targetCurrency.Rate;
-                        var exchangeRate = target / source;
-
-                        var sum = sumAndCurrency.Sum * exchangeRate;
-                        var symbol = targetCurrency.Symbols?.Split('|').FirstOrDefault() ?? targetCurrency.Code;
-
-                        if (sum > 10)
-                        {
-                            sums.Add($"{Math.Round(sum, 0).ToString("N0", CultureInfo.InvariantCulture)}{symbol}");
-                        }
-                        else
-                        {
-                            sums.Add($"{Math.Round(sum, 2).ToString("N2", CultureInfo.InvariantCulture)}{symbol}");
-                        }
+                        sums.Add($"{Math.Round(sum, 0).ToString("N0", CultureInfo.InvariantCulture)}{symbol}");
                     }
-                    str += $"{string.Join(" | ", sums)}\n";
+                    else
+                    {
+                        sums.Add($"{Math.Round(sum, 2).ToString("N2", CultureInfo.InvariantCulture)}{symbol}");
+                    }
                 }
-
-                _log.LogDebug($"HandleUpdateAsync: str: {str}");
-                await _bot.SendTextMessageAsync(chatId, $"{str}", cancellationToken: cancellationToken, disableNotification: true);
-
-                if (groupSetting == null)
-                {
-                    groupSetting = new Pages.CurrencyConverterChatSettings.CurrencyConverterChatSetting();
-                    context.Add(groupSetting);
-                }
-
-                groupSetting.ChatId = chatId;
-                groupSetting.ConvertCount += 1;
-
-                await context.SaveAsync(true, cancellationToken);
+                str += $"{string.Join(" | ", sums)}\n";
             }
-            catch (Exception e)
+
+            _log.LogDebug($"HandleUpdateAsync: str: {str}");
+            await _bot.SendTextMessageAsync(chatId, $"{str}", cancellationToken: cancellationToken, disableNotification: true);
+
+            if (groupSetting == null)
             {
-                _log.LogError(e, $"HandleUpdateAsync");
-            }
-        }
-
-        public List<ParsingResult> ParseSumAndCurrency(List<Currency> currencies, string input)
-        {
-            var result = new List<ParsingResult>();
-
-            var possibleCurrencySymbols = currencies.Select(x => x.Symbols).ToList();
-            var possibleCurrencySymbolsStr = string.Join("|", possibleCurrencySymbols);
-            _log.LogDebug($"ParseSumAndCurrency: possibleCurrencySymbolsStr: {possibleCurrencySymbolsStr}");
-
-            var pattern = @$"\b(?'sumWcur'(?'sum'(?!0+\.00)(?=.{{1,9}}(\.|$| ))(?!0(?!\.))\d{{1,3}}((,| |)\d{{3}})*(\.\d+)?) ?(?'cur'{possibleCurrencySymbolsStr}))(\s|$)";
-            _log.LogDebug($"ParseSumAndCurrency: pattern: {pattern}");
-            var matches = Regex.Matches(input, pattern, RegexOptions.Multiline);
-
-            foreach (Match match in matches)
-            {
-                var currency = currencies
-                    .FirstOrDefault(x => Regex.IsMatch(match.Groups["cur"].Value, $"^({x.Symbols})$"));
-
-                var parsingResult = new ParsingResult();
-
-                parsingResult.Currency = currency;
-                parsingResult.Sum = decimal.Parse(match.Groups["sum"].Value);
-
-                result.Add(parsingResult);
+                groupSetting = new Pages.CurrencyConverterChatSettings.CurrencyConverterChatSetting();
+                context.Add(groupSetting);
             }
 
-            return result;
-        }
+            groupSetting.ChatId = chatId;
+            groupSetting.ConvertCount += 1;
 
-        public class ParsingResult
+            await context.SaveAsync(true, cancellationToken);
+        }
+        catch (Exception e)
         {
-            public Currency Currency { get; set; }
-
-            public decimal Sum { get; set; }
-
-            public override string ToString() => $"{Sum}{Currency?.Code}";
+            _log.LogError(e, $"HandleUpdateAsync");
         }
+    }
+
+    public List<ParsingResult> ParseSumAndCurrency(List<Currency> currencies, string input)
+    {
+        var result = new List<ParsingResult>();
+
+        var possibleCurrencySymbols = currencies.Select(x => x.Symbols).ToList();
+        var possibleCurrencySymbolsStr = string.Join("|", possibleCurrencySymbols);
+        _log.LogDebug($"ParseSumAndCurrency: possibleCurrencySymbolsStr: {possibleCurrencySymbolsStr}");
+
+        var pattern = @$"\b(?'sumWcur'(?'sum'(?!0+\.00)(?=.{{1,9}}(\.|$| ))(?!0(?!\.))\d{{1,3}}((,| |)\d{{3}})*(\.\d+)?) ?(?'cur'{possibleCurrencySymbolsStr}))(\s|$)";
+        _log.LogDebug($"ParseSumAndCurrency: pattern: {pattern}");
+        var matches = Regex.Matches(input, pattern, RegexOptions.Multiline);
+
+        foreach (Match match in matches)
+        {
+            var currency = currencies
+                .FirstOrDefault(x => Regex.IsMatch(match.Groups["cur"].Value, $"^({x.Symbols})$"));
+
+            var parsingResult = new ParsingResult();
+
+            parsingResult.Currency = currency;
+            parsingResult.Sum = decimal.Parse(match.Groups["sum"].Value);
+
+            result.Add(parsingResult);
+        }
+
+        return result;
+    }
+
+    public class ParsingResult
+    {
+        public Currency Currency { get; set; }
+
+        public decimal Sum { get; set; }
+
+        public override string ToString() => $"{Sum}{Currency?.Code}";
     }
 }
